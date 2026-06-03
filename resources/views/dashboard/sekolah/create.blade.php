@@ -74,7 +74,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <button type="sebmit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary">
                         <i class="ti ti-check"></i>Simpan
                     </button>
                 </form>

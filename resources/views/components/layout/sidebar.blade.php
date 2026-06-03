@@ -49,11 +49,11 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+              <a class="sidebar-link @if(request()->is('dashboard/data-ptk*')) active @endif" href="{{ route('data-ptk') }}" aria-expanded="false">
                 <span>
-                  <i class="ti ti-cards"></i>
+                  <i class="ti ti-users"></i>
                 </span>
-                <span class="hide-menu">Sekolah</span>
+                <span class="hide-menu">Data PTK</span>
               </a>
             </li>
             <li class="sidebar-item">
