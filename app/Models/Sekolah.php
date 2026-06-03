@@ -17,18 +17,19 @@ class Sekolah extends Model
         'scope_pengelolaan',
         'operator_id',
     ];
+
     public function operator()
     {
-        return $this->belongsTo(User::class,'operator_id');
+        return $this->belongsTo(User::class, 'operator_id');
     }
 
     public function kecamatan()
     {
-        return $this->belongsTo(Kecamatan::class,'kecamatan_id');
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
 
     public function kabupaten()
     {
-        return $this->belongsTo(Kabupaten::class,'kabupaten_id');
+        return $this->belongsTo(Kabupaten::class, 'kabupaten_id');
     }
 }
