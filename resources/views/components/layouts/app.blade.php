@@ -4,8 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
-  <link rel="shortcut icon" type="image/png" href="{{ asset('template') }}/assets/images/logos/favicon.png" />
+  <title>SIMETA-PTK</title>
   <link rel="stylesheet" href="{{ asset('template/assets/css/styles.min.css') }}" />
 </head>
 
@@ -37,6 +36,8 @@
   <script src="{{ asset('template') }}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="{{ asset('template') }}/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="{{ asset('template') }}/assets/js/dashboard.js"></script>
+
+  @stack('scripts')
 </body>
 
 </html>

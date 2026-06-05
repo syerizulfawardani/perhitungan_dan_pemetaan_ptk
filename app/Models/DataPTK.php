@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataPTK extends Model
 {
+    protected $table = "data_ptk";
     protected $fillable = [
         "nama_ptk", "kategori_id", "tmt_pengangkatan", "jabatan_id", "bidang_id", "pangkat_golongan_id"
     ];
