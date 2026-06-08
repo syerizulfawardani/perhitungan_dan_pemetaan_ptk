@@ -1,18 +1,21 @@
 <x-layouts.app>
     <div class="container-fluid">
         <div class="card shadow-sm">
-            <div class="card-header">
-                <h3 class="card-title p-4 rounded mb-0 text-white bg-primary">Tambah Pendidik & Tenaga Kependidikan</h3>
+            <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+                <h3 class="card-title mb-0 text-white rounded">Tambah Pendidik & Tenaga Kependidikan</h3>
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalKategori">
+                    <i class="ti ti-plus"></i> Kategori
+                </button>
             </div>
 
             <div class="card-body bg-light">
-                <form action="" method="POST">
+                <form action="{{ route('data-ptk.store') }}" method="POST">
                     @csrf
 
                     @if ($errors->any())
                         <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors as $err)
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $err)
                                     <li>{{ $err }}</li>
                                 @endforeach
                             </ul>
@@ -21,11 +24,13 @@
 
                     <div class="mb-3">
                         <label class="form-label">Nama Pendidik & Tenaga Kependidikan</label>
-                        <input type="text" class="form-control" name="nama_ptk" placeholder="Masukkan nama PTK">
+                        <input type="text" class="form-control" name="nama_ptk"
+                            placeholder="Masukkan nama pendidik & tenaga kependidikan">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kategori</label>
-                        <select name="kategori_id" class="form-select">
+                        {{-- {{ dd($kategori->toArray()) }} --}}
+                        <select name="kategori_id" id="kategori_id" class="form-select">
                             <option value="">-- Kategori --</option>
                             @foreach ($kategori as $k)
                                 <option value="{{ $k->id }}">{{ $k->jenis_kategori }}</option>
@@ -74,4 +79,75 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formKategori">
+                    @csrf
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Kategori</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Kategori</label>
+                            <input type="text" name="jenis_kategori" class="form-control" required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info" type="button" data-bs-dismiss="modal">
+                            <i class="ti ti-x fs-3"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-check fs-3"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        document.getElementById("formKategori").addEventListener('submit', async function(e) {
+        e.preventDefault()
+        const form = e.target;
+        const input = form.querySelector('[name="jenis_kategori"]')
+        const errorBox = form.querySelector('.invalid-feedback')
+
+        input.classList.remove('is-invalid');
+        errorBox.textContent = '';
+
+        try {
+            const res = await fetch("{{ route('kategori.store') }}", {
+                method: "POST",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: new FormData(form),
+            });
+
+            if (res.ok) {
+                const {data} = await res.json()
+                const select = document.getElementById('kategori_id');
+                if (select) {
+                    select.add(new Option(data.jenis_kategori, data.id, true, true));
+                }
+                form.reset();
+                bootstrap.Modal.getInstance(document.getElementById('modalKategori')).hide();
+            } else if (res.status === 422) {
+                const {errors} = await res.json();
+                input.classList.add('is-invalid');
+                errorBox.textContent = errors.jenis_kategori?.[0] ?? 'Input tidak valid';
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    })
+    </script>
+    @endpush
 </x-layouts.app>
