@@ -57,10 +57,10 @@
                                                 <i class="ti ti-eye"></i>
                                             </a>
 
-                                            <a href="" class="btn btn-warning btn-sm" title="Edit">
+                                            <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                                 <i class="ti ti-edit"></i>
                                             </a>
-                                            <form action="" method="POST" onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
+                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
                                                 @csrf
                                                 @method('DELETE')
 
