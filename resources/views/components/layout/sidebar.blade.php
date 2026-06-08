@@ -61,7 +61,7 @@
                 <span>
                   <i class="ti ti-file-description"></i>
                 </span>
-                <span class="hide-menu">Data PTK</span>
+                <span class="hide-menu">Pengajuan PTK</span>
               </a>
             </li>
             <li class="sidebar-item">

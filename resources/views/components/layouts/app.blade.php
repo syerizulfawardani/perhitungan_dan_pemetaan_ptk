@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
   <title>PTK</title>
+=======
+  <title>SIMETA-PTK</title>
+>>>>>>> 06420b9fa31baacbcb99e256547b07247af52080
   <link rel="stylesheet" href="{{ asset('template/assets/css/styles.min.css') }}" />
 </head>
 

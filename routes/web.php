@@ -2,8 +2,13 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+<<<<<<< HEAD
 use App\Http\Controllers\DataPtkController;
 use App\Http\Controllers\KategoriPtkController;
+=======
+use App\Http\Controllers\DataPTKController;
+use App\Http\Controllers\KategoriPTKController;
+>>>>>>> 06420b9fa31baacbcb99e256547b07247af52080
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
@@ -34,11 +39,19 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::put('/sekolah/{id}', [SekolahController::class, 'update'])->name('sekolah.update');
     Route::delete('/sekolah/destroy/{id}', [SekolahController::class, 'destroy'])->name('sekolah.destroy');
 
+<<<<<<< HEAD
     Route::post('/kategori', [KategoriPtkController::class, 'store'])->name('kategori.store');
 
     Route::get('/data-ptk', [DataPtkController::class, 'index'])->name('data-ptk');
     Route::get('/data-ptk/create', [DataPtkController::class, 'create'])->name('data-ptk.create');
     Route::post('/data-ptk', [DataPtkController::class, 'store'])->name('data-ptk.store');
+=======
+    Route::post('/kategori', [KategoriPTKController::class, 'store'])->name('kategori.store');
+
+    Route::get('/data-ptk', [DataPTKController::class, 'index'])->name('data-ptk');
+    Route::get('/data-ptk/create', [DataPTKController::class, 'create'])->name('data-ptk.create');
+    Route::post('/data-ptk', [DataPTKController::class, 'store'])->name('data-ptk.store');
+>>>>>>> 06420b9fa31baacbcb99e256547b07247af52080
 });
 
 
