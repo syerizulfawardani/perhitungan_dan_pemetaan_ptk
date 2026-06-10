@@ -57,7 +57,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+              <a class="sidebar-link  @if(request()->is('dashboard/pengajuan-ptk*')) active @endif" href="{{ route('pengajuan-ptk.index') }}" aria-expanded="false">
                 <span>
                   <i class="ti ti-file-description"></i>
                 </span>

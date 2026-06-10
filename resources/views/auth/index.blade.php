@@ -395,10 +395,10 @@
         <div class="left-brand">
             <div class="brand-badge">
                 <span class="dot"></span>
-                Sistem Informasi Pendidikan
+                SIMETA-PTK
             </div>
-            <h1>Data <em>Pendidik</em><br>& Tenaga<br>Kependidikan</h1>
-            <p>Platform pengelolaan data PTK yang terintegrasi, akurat, dan mudah digunakan untuk satuan pendidikan.</p>
+            <h1>Sistem Informasi Perhitungan & Pemetaan <em>Pendidik</em><br>& Tenaga<br>Kependidikan</h1>
+            <p>Perhitungan & Pemetaan Pendidik & Tenaga Kependidikan.</p>
         </div>
 
         <div class="stats-row">
