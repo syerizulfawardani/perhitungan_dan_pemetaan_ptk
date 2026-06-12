@@ -132,6 +132,31 @@
                                 </div>
                             @endif
 
+                            {{-- Sekolah --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-medium">
+                                    Sekolah <span class="text-muted small">(opsional)</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="ti ti-school text-muted"></i>
+                                    </span>
+                                    <select name="sekolah_id" class="form-select border-start-0 @error('sekolah_id') is-invalid @enderror">
+                                        <option value="">-- Pilih Sekolah --</option>
+                                        @foreach ($sekolah as $s)
+                                            <option value="{{ $s->id }}" {{ old('sekolah_id', $ptk->sekolah_id) == $s->id ? 'selected' : '' }}>
+                                                {{ $s->nama_sekolah }}
+                                                @if($s->kecamatan) ({{ $s->kecamatan->nama_kecamatan }}) @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('sekolah_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-text">Pilih sekolah tempat PTK bertugas untuk pemetaan kecamatan.</div>
+                            </div>
+
                             {{-- Nama --}}
                             <div class="mb-4">
                                 <label class="form-label fw-medium">

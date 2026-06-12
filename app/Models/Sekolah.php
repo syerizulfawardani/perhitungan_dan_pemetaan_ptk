@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DataPTK;
 
 class Sekolah extends Model
 {
@@ -31,5 +32,10 @@ class Sekolah extends Model
     public function kabupaten()
     {
         return $this->belongsTo(Kabupaten::class, 'kabupaten_id');
+    }
+
+    public function dataPtk()
+    {
+        return $this->hasMany(DataPTK::class, 'sekolah_id');
     }
 }

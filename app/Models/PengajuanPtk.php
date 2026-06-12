@@ -73,6 +73,11 @@ class PengajuanPtk extends Model
         return $this->belongsTo(User::class, 'diproses_oleh');
     }
 
+    public function dataPtk()
+    {
+        return $this->hasOne(DataPTK::class, 'pengajuan_ptk_id');
+    }
+
     // ── Scopes ───────────────────────────────────────────────
 
     public function scopeMenunggu($query)

@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Buat Pengajuan PTK')
-
-@section('content')
+<x-layouts.app>
 <div class="container-fluid">
 
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -27,16 +23,15 @@
         </div>
     @endif
 
-    <div class="card">
-        <div class="card-header d-flex align-items-center gap-2">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom d-flex align-items-center gap-2 py-3">
             <i class="ti ti-user-plus text-primary fs-5"></i>
             <span class="fw-semibold">Data Pengajuan PTK</span>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
             <form method="POST" action="{{ route('pengajuan-ptk.store') }}">
                 @csrf
-
-                @include('pengajuan_ptk.partials.form_fields')
+                @include('dashboard.pengajuan.partials.form_fields')
 
                 <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                     <a href="{{ route('pengajuan-ptk.index') }}" class="btn btn-outline-secondary">
@@ -51,4 +46,4 @@
     </div>
 
 </div>
-@endsection
+</x-layouts.app>

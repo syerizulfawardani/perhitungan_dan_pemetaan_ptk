@@ -14,6 +14,6 @@ class KategoriPTK extends Model
 
     public function data_ptk()
     {
-        return $this->hasMany(DataPTK::class, 'kategori_ptk');
+        return $this->hasMany(DataPTK::class, 'kategori_id');
     }
 }

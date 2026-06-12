@@ -7,9 +7,19 @@ use App\Models\Kecamatan;
 use App\Models\Sekolah;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SekolahController extends Controller
 {
+    public function mySekolah()
+    {
+        $sekolah = Sekolah::with(['kecamatan', 'kabupaten', 'dataPtk.jabatan'])
+            ->where('operator_id', Auth::id())
+            ->get();
+
+        return view('dashboard.sekolah.my', compact('sekolah'));
+    }
+
     /**
      * Display a listing of the resource.
      */

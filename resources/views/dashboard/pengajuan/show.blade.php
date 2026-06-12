@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Detail Pengajuan — ' . $pengajuanPtk->nama_ptk)
-
-@section('content')
+<x-layouts.app>
 <div class="container-fluid">
 
     {{-- Header --}}
@@ -38,9 +34,8 @@
 
         {{-- Kolom Kiri: Data PTK --}}
         <div class="col-lg-8">
-
-            <div class="card mb-4">
-                <div class="card-header fw-semibold d-flex align-items-center gap-2">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom fw-semibold d-flex align-items-center gap-2 py-3">
                     <i class="ti ti-user text-primary"></i> Data PTK
                 </div>
                 <div class="card-body">
@@ -83,7 +78,6 @@
                 </div>
             </div>
 
-            {{-- Catatan Penolakan --}}
             @if ($pengajuanPtk->status === 'ditolak' && $pengajuanPtk->catatan_admin)
                 <div class="alert alert-danger d-flex gap-2">
                     <i class="ti ti-circle-x fs-5 flex-shrink-0 mt-1"></i>
@@ -94,7 +88,6 @@
                 </div>
             @endif
 
-            {{-- Tombol Aksi --}}
             <div class="d-flex gap-2">
                 @if (in_array($pengajuanPtk->status, ['menunggu', 'ditolak']))
                     <a href="{{ route('pengajuan-ptk.edit', $pengajuanPtk) }}" class="btn btn-warning">
@@ -116,10 +109,8 @@
 
         {{-- Kolom Kanan: Info & Panel Admin --}}
         <div class="col-lg-4">
-
-            {{-- Info Pengajuan --}}
-            <div class="card mb-4">
-                <div class="card-header fw-semibold d-flex align-items-center gap-2">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom fw-semibold d-flex align-items-center gap-2 py-3">
                     <i class="ti ti-info-circle text-primary"></i> Info Pengajuan
                 </div>
                 <div class="card-body">
@@ -144,10 +135,9 @@
                 </div>
             </div>
 
-            {{-- Panel Admin: Kelola Status --}}
             @role('admin')
-            <div class="card">
-                <div class="card-header fw-semibold d-flex align-items-center gap-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom fw-semibold d-flex align-items-center gap-2 py-3">
                     <i class="ti ti-settings text-primary"></i> Kelola Status
                 </div>
                 <div class="card-body">
@@ -180,12 +170,10 @@
                 </div>
             </div>
             @endrole
-
         </div>
     </div>
 
 </div>
-@endsection
 
 @push('scripts')
 <script>
@@ -194,3 +182,4 @@ document.getElementById('statusAdmin')?.addEventListener('change', function () {
 });
 </script>
 @endpush
+</x-layouts.app>
