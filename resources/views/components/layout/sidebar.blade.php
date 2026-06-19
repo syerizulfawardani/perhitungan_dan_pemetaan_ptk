@@ -41,6 +41,13 @@
                         <span class="hide-menu">Sekolah</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link @if(request()->is('dashboard/operator*')) active @endif"
+                       href="{{ route('operator') }}" aria-expanded="false">
+                        <span><i class="ti ti-users"></i></span>
+                        <span class="hide-menu">Operator</span>
+                    </a>
+                </li>
                 @endrole
 
                 @role('operator_sekolah')
