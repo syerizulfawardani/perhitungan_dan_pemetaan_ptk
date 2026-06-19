@@ -110,11 +110,9 @@
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4" style="width:50px">#</th>
-                            <th>Nama PTK</th>
+                            <th>Sekolah</th>
                             <th>Kategori</th>
-                            <th>Jabatan</th>
-                            <th>Golongan</th>
-                            <th>TMT</th>
+                            <th>Tanggal Pengajuan</th>
                             @role('admin')
                             <th>Diajukan Oleh</th>
                             @endrole
@@ -133,12 +131,6 @@
                                 <td>
                                     <span class="badge bg-light text-dark border small">
                                         {{ $item->kategori->jenis_kategori ?? '-' }}
-                                    </span>
-                                </td>
-                                <td class="small">{{ $item->jabatan->nama_jabatan ?? '-' }}</td>
-                                <td>
-                                    <span class="badge bg-light text-dark border">
-                                        {{ $item->golongan->nama_golongan ?? '-' }}
                                     </span>
                                 </td>
                                 <td class="text-muted small">

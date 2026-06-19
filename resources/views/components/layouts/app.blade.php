@@ -6,6 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIMETA-PTK</title>
   <link rel="stylesheet" href="{{ asset('template/assets/css/styles.min.css') }}" />
+
+  <style>
+    .btn-primary {
+        background-color: #0f1f3d;
+        border: #0f1f3d;
+        transition: all;
+    }
+    .btn-primary:hover {
+        background-color: #162d58;
+    }
+  </style>
 </head>
 
 <body>

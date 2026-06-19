@@ -1,32 +1,32 @@
 {{-- resources/views/pengajuan_ptk/partials/form_fields.blade.php --}}
 {{-- Dipakai di create.blade.php dan edit.blade.php --}}
-{{-- Variabel tersedia: $kategoris, $jabatans, $golongans, $bidangs --}}
+{{-- Variabel tersedia: $kategoris, $bidangs, $sekolahOperator --}}
 {{-- Jika edit: $pengajuanPtk tersedia --}}
 
 @php $old = $pengajuanPtk ?? null; @endphp
 
 <div class="row g-3">
 
-    {{-- Nama PTK --}}
+    {{-- Nama Sekolah (otomatis dari akun operator, tidak bisa diubah) --}}
     <div class="col-md-8">
         <label class="form-label fw-semibold">
-            Nama Lengkap PTK <span class="text-danger">*</span>
+            Nama Sekolah
         </label>
-        <input type="text" name="nama_ptk"
-               class="form-control @error('nama_ptk') is-invalid @enderror"
-               value="{{ old('nama_ptk', $old?->nama_ptk) }}"
-               placeholder="Masukkan nama lengkap PTK">
-        @error('nama_ptk')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        <input type="text"
+               class="form-control bg-light"
+               value="{{ $sekolahOperator?->nama_sekolah ?? '-' }}"
+               readonly>
     </div>
 
-    {{-- TMT Pengangkatan --}}
+    {{-- Tanggal Pengajuan --}}
     <div class="col-md-4">
         <label class="form-label fw-semibold">
-            TMT Pengangkatan <span class="text-danger">*</span>
+            Tanggal Pengajuan <span class="text-danger">*</span>
         </label>
         <input type="date" name="tmt_pengangkatan"
                class="form-control @error('tmt_pengangkatan') is-invalid @enderror"
-               value="{{ old('tmt_pengangkatan', $old?->tmt_pengangkatan?->format('Y-m-d')) }}">
+               value="{{ old('tmt_pengangkatan', $old?->tmt_pengangkatan?->format('Y-m-d') ?? now()->format('Y-m-d')) }}"
+               readonly>
         @error('tmt_pengangkatan')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
@@ -64,42 +64,6 @@
             @endforeach
         </select>
         @error('bidang_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-    </div>
-
-    {{-- Jabatan --}}
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">
-            Jabatan <span class="text-danger">*</span>
-        </label>
-        <select name="jabatan_id"
-                class="form-select @error('jabatan_id') is-invalid @enderror">
-            <option value="">-- Pilih Jabatan --</option>
-            @foreach ($jabatans as $j)
-                <option value="{{ $j->id }}"
-                    {{ old('jabatan_id', $old?->jabatan_id) == $j->id ? 'selected' : '' }}>
-                    {{ $j->nama_jabatan }}
-                </option>
-            @endforeach
-        </select>
-        @error('jabatan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-    </div>
-
-    {{-- Pangkat / Golongan --}}
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">
-            Pangkat / Golongan <span class="text-danger">*</span>
-        </label>
-        <select name="pangkat_golongan_id"
-                class="form-select @error('pangkat_golongan_id') is-invalid @enderror">
-            <option value="">-- Pilih Golongan --</option>
-            @foreach ($golongans as $g)
-                <option value="{{ $g->id }}"
-                    {{ old('pangkat_golongan_id', $old?->pangkat_golongan_id) == $g->id ? 'selected' : '' }}>
-                    {{ $g->nama_golongan }}
-                </option>
-            @endforeach
-        </select>
-        @error('pangkat_golongan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
     {{-- Alasan Pengajuan --}}
