@@ -67,4 +67,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::patch('pengajuan-ptk/{pengajuanPtk}/status', [PengajuanPtkController::class, 'updateStatus'])
          ->name('pengajuan-ptk.update-status')
          ->middleware('role:admin');
+
+    Route::get('operator', [OperatorController::class, 'index'])->middleware(['auth', 'role:admin'])->name('operator');
+    Route::get('operator/create', [OperatorController::class, 'create'])->name('operator.create');
+    Route::post('operator', [OperatorController::class, 'store'])->name('operator.store');
+    Route::get('operator/edit/{id}', [OperatorController::class, 'edit'])->name('operator.edit');
+    Route::put('operator/{id}', [OperatorController::class, 'update'])->name('operator.update');
+    Route::delete('operator/destroy/{id}', [OperatorController::class, 'destroy'])->name('operator.destroy');
 });
