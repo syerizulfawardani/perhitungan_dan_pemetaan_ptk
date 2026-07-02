@@ -61,11 +61,11 @@
         <div class="card-body">
             <form method="GET" action="{{ route('pengajuan-ptk.index') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Nama PTK</label>
+                    <label class="form-label small fw-semibold">Nama Sekolah</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                         <input type="text" name="search" class="form-control"
-                               placeholder="Cari nama PTK..." value="{{ request('search') }}">
+                               placeholder="Cari Nama Sekolah..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -181,11 +181,23 @@
                 </table>
             </div>
 
-            @if ($pengajuans->hasPages())
-                <div class="px-4 py-3 border-top">
-                    {{ $pengajuans->links() }}
+            <div class="card-footer bg-white border-top">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                    <div class="text-muted small">
+                        Menampilkan
+                        <strong>{{ $pengajuans->firstItem() ?? 0 }}</strong>
+                        -
+                        <strong>{{ $pengajuans->lastItem() ?? 0 }}</strong>
+                        dari
+                        <strong>{{ $pengajuans->total() }}</strong>
+                        data.
+                    </div>
+
+                    <div>
+                        {{ $pengajuans->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
-            @endif
+            </div
         </div>
     </div>
 

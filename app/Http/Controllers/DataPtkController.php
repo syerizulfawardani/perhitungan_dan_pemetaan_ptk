@@ -13,12 +13,16 @@ use Illuminate\Http\Request;
 
 class DataPTKController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataPtk = DataPTK::with(['sekolah.kecamatan', 'bidang', 'jabatan', 'kategori', 'pangkat_golongan'])
-            ->latest()
-            ->get();
+        $search = $request->search;
 
+        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_ptk', 'like', "%{$search}%")->orWhere('jabatan_id', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(10);
         return view('dashboard.data-ptk.index', compact('dataPtk'));
     }
 

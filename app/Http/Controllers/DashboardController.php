@@ -55,6 +55,7 @@ class DashboardController extends Controller
             $pengajuanPerBulan[] = [
                 'bulan'     => $date->translatedFormat('M Y'),
                 'menunggu'  => (clone $base)->where('status', 'menunggu')->count(),
+                'proses'    => (clone $base)->where('status', 'proses')->count(),
                 'disetujui' => (clone $base)->where('status', 'disetujui')->count(),
                 'ditolak'   => (clone $base)->where('status', 'ditolak')->count(),
             ];

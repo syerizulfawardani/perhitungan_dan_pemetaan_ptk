@@ -51,7 +51,7 @@
     {{-- Bidang Studi Sertifikasi --}}
     <div class="col-md-6">
         <label class="form-label fw-semibold">
-            Bidang Studi Sertifikasi <span class="text-danger">*</span>
+            Bidang Studi <span class="text-danger">*</span>
         </label>
         <select name="bidang_id"
                 class="form-select @error('bidang_id') is-invalid @enderror">
@@ -59,7 +59,7 @@
             @foreach ($bidangs as $b)
                 <option value="{{ $b->id }}"
                     {{ old('bidang_id', $old?->bidang_id) == $b->id ? 'selected' : '' }}>
-                    {{ $b->nama_bidang_sertifikasi }}
+                    {{ $b->nama_bidang }}
                 </option>
             @endforeach
         </select>

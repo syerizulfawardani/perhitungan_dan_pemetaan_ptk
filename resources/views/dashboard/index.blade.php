@@ -176,11 +176,12 @@
         chart: { type: 'bar', height: 280, toolbar: { show: false }, fontFamily: 'inherit' },
         series: [
             { name: 'Menunggu',  data: chartData.map(d => d.menunggu) },
+            { name: 'Diproses',  data: chartData.map(d => d.proses) },
             { name: 'Disetujui', data: chartData.map(d => d.disetujui) },
             { name: 'Ditolak',   data: chartData.map(d => d.ditolak) },
         ],
         xaxis: { categories: chartData.map(d => d.bulan), labels: { style: { fontSize: '11px' } } },
-        colors: ['#6c757d', '#28a745', '#dc3545'],
+        colors: ['#539BFF', '#FFAE1F', '#13DEB9', '#FA896B'],
         plotOptions: { bar: { borderRadius: 3, columnWidth: '55%' } },
         dataLabels: { enabled: false },
         legend: { position: 'top' },

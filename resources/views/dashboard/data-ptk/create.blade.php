@@ -67,7 +67,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Terhitung Mulai Tanggal</label>
+                        <label class="form-label">Tanggal Pengangkatan</label>
                         <input type="date" class="form-control" name="tmt_pengangkatan">
                     </div>
                     <div class="mb-3">
