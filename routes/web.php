@@ -11,7 +11,7 @@ use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect() ->route('login');
 });
 
 Route::prefix('login')->middleware('guest')->group(function () {

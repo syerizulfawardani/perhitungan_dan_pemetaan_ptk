@@ -13,18 +13,27 @@ use Illuminate\Http\Request;
 
 class DataPTKController extends Controller
 {
-    public function index(Request $request)
-    {
-        $search = $request->search;
+   public function index(Request $request)
+{
+    $search   = $request->search;
+    $kategori = $request->kategori; // "Pendidik" | "Tenaga Kependidikan"
 
-        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
-            ->when($search, function ($query) use ($search) {
-                $query->where('nama_ptk', 'like', "%{$search}%")->orWhere('jabatan_id', 'like', "%{$search}%");
-            })
-            ->orderBy('id')
-            ->paginate(10);
-        return view('dashboard.data-ptk.index', compact('dataPtk'));
-    }
+    $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
+        ->when($search, function ($query) use ($search) {
+            $query->where('nama_ptk', 'like', "%{$search}%")
+                  ->orWhere('jabatan_id', 'like', "%{$search}%");
+        })
+        ->when($kategori, function ($query) use ($kategori) {
+            $query->whereHas('kategori', function ($q) use ($kategori) {
+                $q->where('jenis_kategori', $kategori);
+            });
+        })
+        ->orderBy('id')
+        ->paginate(10)
+        ->withQueryString(); // biar filter kategori tetap ada saat pindah halaman
+
+    return view('dashboard.data-ptk.index', compact('dataPtk'));
+}
 
     public function create()
     {

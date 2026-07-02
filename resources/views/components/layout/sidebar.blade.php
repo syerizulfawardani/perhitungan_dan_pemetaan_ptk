@@ -121,12 +121,33 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link @if(request()->is('dashboard/sekolah*')) active @endif"
-                       href="{{ route('sekolah') }}" aria-expanded="false">
-                        <span><i class="ti ti-school"></i></span>
-                        <span class="hide-menu">Sekolah</span>
+                    <a class="sidebar-link has-arrow @if (request()->is('dashboard/sekolah*')) active @endif"
+                        href="javascript:vid(0)" aria-expanded="false">
+
+                        <span>
+                            <i class="ti ti-school"></i>
+                        </span>
+                        <span class="hide-menu">
+                            Sekolah
+                        </span>
                     </a>
+
+                    <ul aria-expanded="false"class="collapse first-level @if(request ()->is('dashboard/sekolah*')) in @endif">
+                        @foreach (['PAUD', 'SD', 'SMP'] as $jenjang)
+                            <li class="sidebar-item">
+                                <a href="{{ route('sekolah', ['jenjang' =>$jenjang]) }}"
+                                    class="sidebar-link @if(request('jenjang') === $jenjang) active @endif">
+                                     <div class="round-16 d-flex align-items-center justify-content-center">
+                                        <i class="ti ti-circle"></i>
+                                    </div>
+                                    <span class="hide-menu">{{ $jenjang }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </li>
+
+
                 <li class="sidebar-item">
                     <a class="sidebar-link @if(request()->is('dashboard/operator*')) active @endif"
                        href="{{ route('operator') }}" aria-expanded="false">
@@ -154,15 +175,36 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">PTK</span>
                 </li>
-                @role('admin')
-                    <li class="sidebar-item">
-                        <a class="sidebar-link @if (request()->is('dashboard/data-ptk*')) active @endif"
-                            href="{{ route('data-ptk') }}" aria-expanded="false">
-                            <span><i class="ti ti-users"></i></span>
-                            <span class="hide-menu">Data PTK</span>
-                        </a>
-                    </li>
-                @endrole
+               @role('admin')
+    <li class="sidebar-item">
+        <a class="sidebar-link has-arrow @if(request()->is('dashboard/data-ptk*')) active @endif"
+           href="javascript:void(0)" aria-expanded="false">
+            <span><i class="ti ti-users"></i></span>
+            <span class="hide-menu">Data PTK</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level @if(request()->is('dashboard/data-ptk*')) in @endif">
+            <li class="sidebar-item">
+                <a href="{{ route('data-ptk', ['kategori' => 'Pendidik']) }}"
+                   class="sidebar-link @if(request('kategori') === 'Pendidik') active @endif">
+                    <div class="round-16 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-circle"></i>
+                    </div>
+                    <span class="hide-menu">Pendidik</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{{ route('data-ptk', ['kategori' => 'Tenaga Kependidikan']) }}"
+                   class="sidebar-link @if(request('kategori') === 'Tenaga Kependidikan') active @endif">
+                    <div class="round-16 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-circle"></i>
+                    </div>
+                    <span class="hide-menu">Tenaga Kependidikan</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+@endrole
                 <li class="sidebar-item">
                     <a class="sidebar-link @if (request()->is('dashboard/pengajuan-ptk*')) active @endif"
                         href="{{ route('pengajuan-ptk.index') }}" aria-expanded="false">
