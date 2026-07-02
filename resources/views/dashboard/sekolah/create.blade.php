@@ -60,9 +60,8 @@
                         <label class="form-label">Tingkat Pengelolaan</label>
                         <select class="form-select" name="scope_pengelolaan">
                             <option value="">-- Pilih Tingkat Pengelolaan --</option>
-                            <option value="kabupaten">kabupaten</option>
-                            <option value="kecamatan">kecamatan</option>
-
+                            <option value="kabupaten" class="uppercase">kabupaten</option>
+                            <option value="kecamatan" class="uppercase">kecamatan</option>
                         </select>
                     </div>
                      <div class="mb-3">
