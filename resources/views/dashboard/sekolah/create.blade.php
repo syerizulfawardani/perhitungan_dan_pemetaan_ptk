@@ -19,8 +19,7 @@
                     @endif
                     <div class="alert alert-info">
                         <i class="ti ti-info-circle"></i>
-                        Akun operator dibuat otomatis. <strong>Login = NPSN</strong>, <strong>Password awal =
-                            NPSN</strong>
+                        Akun operator dibuat otomatis
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nama Sekolah</label>
@@ -65,8 +64,8 @@
                         <label class="form-label">Tingkat Pengelolaan</label>
                         <select class="form-select" name="scope_pengelolaan">
                             <option value="">-- Pilih Tingkat Pengelolaan --</option>
-                            <option value="kabupaten">kabupaten</option>
-                            <option value="kecamatan">kecamatan</option>
+                            <option value="kabupaten">KABUPATEN</option>
+                            <option value="kecamatan">KECAMATAN</option>
 
                         </select>
                     </div>

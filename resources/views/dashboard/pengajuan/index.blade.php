@@ -61,11 +61,11 @@
         <div class="card-body">
             <form method="GET" action="{{ route('pengajuan-ptk.index') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Nama PTK</label>
+                    <label class="form-label small fw-semibold">Nama Sekolah</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                         <input type="text" name="search" class="form-control"
-                               placeholder="Cari nama PTK..." value="{{ request('search') }}">
+                               placeholder="Cari Nama Sekolah..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-md-3">

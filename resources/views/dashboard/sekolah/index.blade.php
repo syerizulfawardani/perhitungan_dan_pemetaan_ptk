@@ -26,6 +26,33 @@
                     Tambah Sekolah
                 </a>
             </div>
+                <div class="card-body">
+
+            <form action="{{ route('operator') }}" method="GET">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Cari nama atau email..."
+                            value="{{ request('search') }}">
+                    </div>
+
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-search"></i>
+                            Cari
+                        </button>
+                    </div>
+
+                    <div class="col-md-auto">
+                        <a href="{{ route('operator') }}"
+                            class="btn btn-light border">
+                            Reset
+                        </a>
+                    </div>
+                </div>
         </div>
 
         {{-- Table Card --}}

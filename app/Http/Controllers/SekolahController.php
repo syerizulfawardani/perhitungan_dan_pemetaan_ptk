@@ -24,10 +24,17 @@ class SekolahController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
-        $sekolah = Sekolah::with(['operator'])->orderBy('id', 'desc')->paginate(10);
-        return view("dashboard.sekolah.index", compact("sekolah"));
+        $search = $request->search;
+
+        $sekolah = Sekolah::with('operator')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_sekolah', 'like', "%{$search}%")->orWhere('npsn_sekolah', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(10);
+        return view('dashboard.sekolah.index', compact('sekolah'));
     }
 
     /**
