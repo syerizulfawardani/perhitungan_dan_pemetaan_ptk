@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataPTKController;
 use App\Http\Controllers\KategoriPTKController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\PengajuanPtkController;
 use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;

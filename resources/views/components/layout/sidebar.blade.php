@@ -109,24 +109,31 @@
                 </li>
 
                 @role('admin')
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">MASTER DATA</span>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link @if (request()->is('dashboard/kecamatan*')) active @endif"
-                            href="{{ route('kecamatan') }}" aria-expanded="false">
-                            <span><i class="ti ti-map"></i></span>
-                            <span class="hide-menu">Kecamatan</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link @if (request()->is('dashboard/sekolah*')) active @endif"
-                            href="{{ route('sekolah') }}" aria-expanded="false">
-                            <span><i class="ti ti-school"></i></span>
-                            <span class="hide-menu">Sekolah</span>
-                        </a>
-                    </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">MASTER DATA</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link @if(request()->is('dashboard/kecamatan*')) active @endif"
+                       href="{{ route('kecamatan') }}" aria-expanded="false">
+                        <span><i class="ti ti-map"></i></span>
+                        <span class="hide-menu">Kecamatan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link @if(request()->is('dashboard/sekolah*')) active @endif"
+                       href="{{ route('sekolah') }}" aria-expanded="false">
+                        <span><i class="ti ti-school"></i></span>
+                        <span class="hide-menu">Sekolah</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link @if(request()->is('dashboard/operator*')) active @endif"
+                       href="{{ route('operator') }}" aria-expanded="false">
+                        <span><i class="ti ti-users"></i></span>
+                        <span class="hide-menu">Operator</span>
+                    </a>
+                </li>
                 @endrole
 
                 @role('operator_sekolah')

@@ -81,8 +81,7 @@ class DashboardController extends Controller
     public function petaPtk()
     {
         $ptkPerKecamatan = DB::table('kecamatan')
-            ->leftJoin('sekolah', 'sekolah.kecamatan_id', '=', 'kecamatan.id')
-            ->leftJoin('data_ptk', 'data_ptk.sekolah_id', '=', 'sekolah.id')
+            ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
             ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
             ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
             ->get()

@@ -101,10 +101,33 @@
     };
     legend.addTo(map);
 
+    // Merge semua polygon per kecamatan menjadi 1 MultiPolygon
+    function mergeByKecamatan(data) {
+        const grouped = {};
+        data.features.forEach(f => {
+            const nama = f.properties.nama_kecamatan;
+            if (!grouped[nama]) {
+                grouped[nama] = {
+                    type: 'Feature',
+                    properties: f.properties,
+                    geometry: { type: 'MultiPolygon', coordinates: [] }
+                };
+            }
+            const g = f.geometry;
+            if (g.type === 'Polygon') {
+                grouped[nama].geometry.coordinates.push(g.coordinates);
+            } else if (g.type === 'MultiPolygon') {
+                g.coordinates.forEach(c => grouped[nama].geometry.coordinates.push(c));
+            }
+        });
+        return { type: 'FeatureCollection', features: Object.values(grouped) };
+    }
+
     // Load GeoJSON
     fetch('{{ asset("geojson/ketapang_kecamatan.json") }}')
         .then(r => r.json())
-        .then(data => {
+        .then(raw => {
+            const data = mergeByKecamatan(raw);
             geojsonLayer = L.geoJSON(data, {
                 style: style,
                 onEachFeature: function (feature, layer) {
