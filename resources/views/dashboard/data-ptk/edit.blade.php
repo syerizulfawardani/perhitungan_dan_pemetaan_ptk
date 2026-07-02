@@ -141,10 +141,12 @@
                                     <span class="input-group-text bg-light border-end-0">
                                         <i class="ti ti-school text-muted"></i>
                                     </span>
-                                    <select name="sekolah_id" class="form-select border-start-0 @error('sekolah_id') is-invalid @enderror">
+                                    <select name="sekolah_id" id="sekolah_id" class="form-select border-start-0 @error('sekolah_id') is-invalid @enderror">
                                         <option value="">-- Pilih Sekolah --</option>
                                         @foreach ($sekolah as $s)
-                                            <option value="{{ $s->id }}" {{ old('sekolah_id', $ptk->sekolah_id) == $s->id ? 'selected' : '' }}>
+                                            <option value="{{ $s->id }}"
+                                                data-kecamatan-id="{{ $s->kecamatan_id }}"
+                                                {{ old('sekolah_id', $ptk->sekolah_id) == $s->id ? 'selected' : '' }}>
                                                 {{ $s->nama_sekolah }}
                                                 @if($s->kecamatan) ({{ $s->kecamatan->nama_kecamatan }}) @endif
                                             </option>
@@ -154,7 +156,33 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-text">Pilih sekolah tempat PTK bertugas untuk pemetaan kecamatan.</div>
+                                <div class="form-text">Memilih sekolah akan otomatis mengisi kecamatan.</div>
+                            </div>
+
+                            {{-- Kecamatan --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-medium">
+                                    Kecamatan <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="ti ti-map-pin text-muted"></i>
+                                    </span>
+                                    <select name="kecamatan_id" id="kecamatan_id"
+                                        class="form-select border-start-0 @error('kecamatan_id') is-invalid @enderror">
+                                        <option value="">-- Pilih Kecamatan --</option>
+                                        @foreach ($kecamatan as $kec)
+                                            <option value="{{ $kec->id }}"
+                                                {{ old('kecamatan_id', $ptk->kecamatan_id) == $kec->id ? 'selected' : '' }}>
+                                                {{ $kec->nama_kecamatan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('kecamatan_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-text">Kecamatan tempat PTK bertugas (untuk pemetaan).</div>
                             </div>
 
                             {{-- Nama --}}
@@ -348,6 +376,16 @@
 
     @push('scripts')
     <script>
+        // Auto-isi kecamatan saat sekolah dipilih
+        document.getElementById('sekolah_id').addEventListener('change', function () {
+            const opt = this.options[this.selectedIndex];
+            const kecId = opt.dataset.kecamatanId;
+            const kecSelect = document.getElementById('kecamatan_id');
+            if (kecId) {
+                kecSelect.value = kecId;
+            }
+        });
+
         // Live preview nama di sidebar
         document.getElementById('inputNama').addEventListener('input', function () {
             const val = this.value.trim();

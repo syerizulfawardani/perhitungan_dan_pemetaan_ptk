@@ -66,14 +66,6 @@ class DashboardController extends Controller
             ->take(6)
             ->get();
 
-        $ptkPerKecamatan = DB::table('kecamatan')
-            ->leftJoin('sekolah', 'sekolah.kecamatan_id', '=', 'kecamatan.id')
-            ->leftJoin('data_ptk', 'data_ptk.sekolah_id', '=', 'sekolah.id')
-            ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
-            ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
-            ->get()
-            ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
-
         return view('dashboard.index', compact(
             'totalPtk',
             'totalSekolah',
@@ -83,7 +75,18 @@ class DashboardController extends Controller
             'ptkPerKategori',
             'pengajuanPerBulan',
             'pengajuanTerbaru',
-            'ptkPerKecamatan',
         ));
+    }
+
+    public function petaPtk()
+    {
+        $ptkPerKecamatan = DB::table('kecamatan')
+            ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
+            ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
+            ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
+            ->get()
+            ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
+
+        return view('dashboard.peta-ptk.index', compact('ptkPerKecamatan'));
     }
 }

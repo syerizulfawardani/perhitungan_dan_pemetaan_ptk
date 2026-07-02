@@ -48,20 +48,6 @@
                             <p class="text-muted small mb-1">Kategori PTK</p>
                             <p class="fw-semibold mb-0">{{ $pengajuanPtk->kategori->jenis_kategori ?? '-' }}</p>
                         </div>
-                        <div class="col-md-6">
-                            <p class="text-muted small mb-1">Bidang Studi Sertifikasi</p>
-                            <p class="fw-semibold mb-0">{{ $pengajuanPtk->bidang->nama_bidang_sertifikasi ?? '-' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="text-muted small mb-1">Jabatan</p>
-                            <p class="fw-semibold mb-0">{{ $pengajuanPtk->jabatan->nama_jabatan ?? '-' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="text-muted small mb-1">Pangkat / Golongan</p>
-                            <span class="badge bg-primary fs-6">
-                                {{ $pengajuanPtk->golongan->nama_golongan ?? '-' }}
-                            </span>
-                        </div>
                         <div class="col-md-4">
                             <p class="text-muted small mb-1">TMT Pengangkatan</p>
                             <p class="fw-semibold mb-0">

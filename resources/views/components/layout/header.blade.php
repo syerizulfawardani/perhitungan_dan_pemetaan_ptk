@@ -12,7 +12,7 @@
             <ul class="navbar-nav flex-row ms-auto align-items-center gap-2">
 
                 {{-- Role badge --}}
-                <li class="nav-item d-none d-md-flex align-items-center">
+                {{-- <li class="nav-item d-none d-md-flex align-items-center">
                     @if(Auth::user()->hasRole('admin'))
                         <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">
                             <i class="ti ti-shield-check me-1"></i> Admin
@@ -22,7 +22,7 @@
                             <i class="ti ti-school me-1"></i> Operator Sekolah
                         </span>
                     @endif
-                </li>
+                </li> --}}
 
                 {{-- User dropdown --}}
                 <li class="nav-item dropdown">

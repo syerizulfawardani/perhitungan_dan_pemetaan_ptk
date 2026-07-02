@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mysql -u root perhitungan_dan_pemetaan_ptk -e \"INSERT INTO migrations \\(migration, batch\\) VALUES \\('2026_06_26_154827_add_kecamatan_id_to_data_ptk_table', 6\\);\")"
+    ]
+  }
+}

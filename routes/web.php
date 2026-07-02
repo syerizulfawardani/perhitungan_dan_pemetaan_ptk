@@ -24,6 +24,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/peta-ptk', [DashboardController::class, 'petaPtk'])->name('peta-ptk');
     Route::get('/api/ptk-per-kecamatan', [DashboardController::class, 'ptkPerKecamatan'])->name('dashboard.ptk-per-kecamatan');
 
     // Operator only

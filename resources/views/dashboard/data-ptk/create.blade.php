@@ -24,16 +24,31 @@
 
                     <div class="mb-3">
                         <label class="form-label">Sekolah <span class="text-muted small">(opsional)</span></label>
-                        <select name="sekolah_id" class="form-select">
+                        <select name="sekolah_id" id="sekolah_id" class="form-select">
                             <option value="">-- Pilih Sekolah --</option>
                             @foreach ($sekolah as $s)
-                                <option value="{{ $s->id }}" {{ old('sekolah_id') == $s->id ? 'selected' : '' }}>
+                                <option value="{{ $s->id }}"
+                                    data-kecamatan-id="{{ $s->kecamatan_id }}"
+                                    {{ old('sekolah_id') == $s->id ? 'selected' : '' }}>
                                     {{ $s->nama_sekolah }}
                                     @if($s->kecamatan) ({{ $s->kecamatan->nama_kecamatan }}) @endif
                                 </option>
                             @endforeach
                         </select>
-                        <div class="form-text">Pilih sekolah tempat PTK bertugas untuk pemetaan kecamatan.</div>
+                        <div class="form-text">Memilih sekolah akan otomatis mengisi kecamatan.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
+                        <select name="kecamatan_id" id="kecamatan_id" class="form-select">
+                            <option value="">-- Pilih Kecamatan --</option>
+                            @foreach ($kecamatan as $kec)
+                                <option value="{{ $kec->id }}" {{ old('kecamatan_id') == $kec->id ? 'selected' : '' }}>
+                                    {{ $kec->nama_kecamatan }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-text">Kecamatan tempat PTK bertugas (untuk pemetaan).</div>
                     </div>
 
                     <div class="mb-3">
@@ -126,6 +141,18 @@
 
     @push('scripts')
     <script>
+        // Auto-isi kecamatan saat sekolah dipilih
+        document.getElementById('sekolah_id').addEventListener('change', function () {
+            const opt = this.options[this.selectedIndex];
+            const kecId = opt.dataset.kecamatanId;
+            const kecSelect = document.getElementById('kecamatan_id');
+            if (kecId) {
+                kecSelect.value = kecId;
+            } else {
+                kecSelect.value = '';
+            }
+        });
+
         document.getElementById("formKategori").addEventListener('submit', async function(e) {
         e.preventDefault()
         const form = e.target;
