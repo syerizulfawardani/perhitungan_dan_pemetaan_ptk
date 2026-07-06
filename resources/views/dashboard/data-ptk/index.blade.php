@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="col-md-auto">
-                        <a href="{{ route('operator') }}"
+                        <a href="{{ route('data-ptk') }}"
                             class="btn btn-light border">
                             Reset
                         </a>
@@ -87,7 +87,7 @@
                                             <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                                 <i class="ti ti-edit"></i>
                                             </a>
-                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
+                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" class="form-hapus">
                                                 @csrf
                                                 @method('DELETE')
 
@@ -116,4 +116,28 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.querySelectorAll('.form-hapus').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Yakin ingin menghapus data ini?',
+                    text: 'Data yang dihapus tidak bisa dikembalikan!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-layouts.app>

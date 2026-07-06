@@ -47,6 +47,28 @@
   <script src="{{ asset('template') }}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="{{ asset('template') }}/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="{{ asset('template') }}/assets/js/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {{-- Handler global: otomatis munculin SweetAlert dari flash message Laravel --}}
+  <script>
+    @if (session('success'))
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: @json(session('success')),
+        timer: 2500,
+        showConfirmButton: false,
+      });
+    @endif
+
+    @if (session('error'))
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: @json(session('error')),
+      });
+    @endif
+  </script>
 
   @stack('scripts')
 </body>

@@ -28,14 +28,14 @@
             </div>
                 <div class="card-body">
 
-            <form action="{{ route('operator') }}" method="GET">
+            <form action="{{ route('sekolah') }}" method="GET">
                 <div class="row g-2">
                     <div class="col-md-4">
                         <input
                             type="text"
                             name="search"
                             class="form-control"
-                            placeholder="Cari nama atau email..."
+                            placeholder="Cari nama atau npsn..."
                             value="{{ request('search') }}">
                     </div>
 
@@ -47,12 +47,13 @@
                     </div>
 
                     <div class="col-md-auto">
-                        <a href="{{ route('operator') }}"
+                        <a href="{{ route('sekolah') }}"
                             class="btn btn-light border">
                             Reset
                         </a>
                     </div>
                 </div>
+            </form>
         </div>
 
         {{-- Table Card --}}
