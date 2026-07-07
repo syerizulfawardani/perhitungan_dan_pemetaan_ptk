@@ -80,14 +80,36 @@ class DashboardController extends Controller
     }
 
     public function petaPtk()
+{
+    // Total keseluruhan (tetap pakai query lama, tidak berubah)
+    $ptkPerKecamatan = DB::table('kecamatan')
+        ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
+        ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
+        ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
+        ->get()
+        ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
+
+    // Breakdown per jenjang (PAUD, SD, SMP)
+    $ptkPaud = $this->getPtkPerJenjang('PAUD');
+    $ptkSd   = $this->getPtkPerJenjang('SD');
+    $ptkSmp  = $this->getPtkPerJenjang('SMP');
+
+    return view('dashboard.peta-ptk.index', compact(
+        'ptkPerKecamatan', 'ptkPaud', 'ptkSd', 'ptkSmp'
+    ));
+}
+
+    private function getPtkPerJenjang(string $jenjang)
     {
-        $ptkPerKecamatan = DB::table('kecamatan')
-            ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
+        return DB::table('kecamatan')
+            ->leftJoin('sekolah', function ($join) use ($jenjang) {
+                $join->on('sekolah.kecamatan_id', '=', 'kecamatan.id')
+                    ->where('sekolah.jenjang_sekolah', '=', $jenjang);
+            })
+            ->leftJoin('data_ptk', 'data_ptk.sekolah_id', '=', 'sekolah.id')
             ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
             ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
             ->get()
             ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
-
-        return view('dashboard.peta-ptk.index', compact('ptkPerKecamatan'));
     }
 }

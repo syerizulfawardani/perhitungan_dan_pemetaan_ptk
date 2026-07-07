@@ -71,7 +71,7 @@
                         <input
                             type="text"
                             name="login_id"
-                            class="form-control @error('login_Id') is-invalid @enderror"
+                            class="form-control @error('login_id') is-invalid @enderror"
                             value="{{ old('login_id', $operator->login_id) }}">
 
                         @error('login_id')

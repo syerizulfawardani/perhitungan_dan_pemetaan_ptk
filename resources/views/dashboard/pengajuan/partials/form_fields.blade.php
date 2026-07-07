@@ -59,7 +59,7 @@
             @foreach ($bidangs as $b)
                 <option value="{{ $b->id }}"
                     {{ old('bidang_id', $old?->bidang_id) == $b->id ? 'selected' : '' }}>
-                    {{ $b->nama_bidang }}
+                    {{ $b->nama_bidang_sertifikasi }}
                 </option>
             @endforeach
         </select>

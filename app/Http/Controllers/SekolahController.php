@@ -70,9 +70,11 @@ class SekolahController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
+            $emailLocalPart = preg_replace('/[^A-Za-z0-9._-]/', '', $request->nama_sekolah);
+
             $operator = User::create([
                 'name' => $request->nama_sekolah,
-                'email' => $request->nama_sekolah . '@src.id',
+                'email' => $emailLocalPart . '@src.id',
                 'login_id' => $request->npsn_sekolah,
                 'password' => bcrypt($request->npsn_sekolah),
             ]);
@@ -148,8 +150,11 @@ class SekolahController extends Controller
             ]));
 
             if ($sekolah->operator) {
+                $emailLocalPart = preg_replace('/[^A-Za-z0-9._-]/', '', $request->nama_sekolah);
+
                 $sekolah->operator->update([
                     'name' => $request->nama_sekolah,
+                    'email' => $emailLocalPart . '@src.id',
                     'login_id' => $request->npsn_sekolah,
                 ]);
             }
