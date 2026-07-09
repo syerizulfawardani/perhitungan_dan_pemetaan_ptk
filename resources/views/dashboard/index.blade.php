@@ -127,7 +127,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="ps-4 py-3 small fw-semibold text-muted">#</th>
-                                    <th class="py-3 small fw-semibold text-muted">Nama PTK</th>
+                                    <th class="py-3 small fw-semibold text-muted">Nama Sekolah</th>
                                     <th class="py-3 small fw-semibold text-muted">Kategori</th>
                                     <th class="py-3 small fw-semibold text-muted">Diajukan Oleh</th>
                                     <th class="py-3 small fw-semibold text-muted">Tanggal</th>

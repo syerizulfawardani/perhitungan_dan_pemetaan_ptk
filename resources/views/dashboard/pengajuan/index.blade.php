@@ -152,6 +152,7 @@
                                            class="btn btn-sm btn-outline-info" title="Detail">
                                             <i class="ti ti-eye"></i>
                                         </a>
+                                        @role("operator_sekolah")
                                         @if (in_array($item->status, ['menunggu', 'ditolak']))
                                             <a href="{{ route('pengajuan-ptk.edit', $item) }}"
                                                class="btn btn-sm btn-outline-warning" title="Edit">
@@ -166,6 +167,7 @@
                                                 </button>
                                             </form>
                                         @endif
+                                        @endrole
                                     </div>
                                 </td>
                             </tr>

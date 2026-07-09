@@ -94,8 +94,25 @@ class DashboardController extends Controller
     $ptkSd   = $this->getPtkPerJenjang('SD');
     $ptkSmp  = $this->getPtkPerJenjang('SMP');
 
+    // Jumlah sekolah per kecamatan per jenjang (untuk popup peta)
+    $sekolahPerKecamatan = DB::table('kecamatan')
+        ->leftJoin('sekolah', 'sekolah.kecamatan_id', '=', 'kecamatan.id')
+        ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
+        ->select(
+            'kecamatan.nama_kecamatan',
+            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'PAUD' THEN 1 ELSE 0 END) as paud"),
+            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SD' THEN 1 ELSE 0 END) as sd"),
+            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SMP' THEN 1 ELSE 0 END) as smp")
+        )
+        ->get()
+        ->mapWithKeys(fn($row) => [$row->nama_kecamatan => [
+            'paud' => (int) $row->paud,
+            'sd'   => (int) $row->sd,
+            'smp'  => (int) $row->smp,
+        ]]);
+
     return view('dashboard.peta-ptk.index', compact(
-        'ptkPerKecamatan', 'ptkPaud', 'ptkSd', 'ptkSmp'
+        'ptkPerKecamatan', 'ptkPaud', 'ptkSd', 'ptkSmp', 'sekolahPerKecamatan'
     ));
 }
 
