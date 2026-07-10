@@ -127,7 +127,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="ps-4 py-3 small fw-semibold text-muted">#</th>
-                                    <th class="py-3 small fw-semibold text-muted">Nama Sekolah</th>
+                                    <th class="py-3 small fw-semibold text-muted">Nomor Pengajuan</th>
                                     <th class="py-3 small fw-semibold text-muted">Kategori</th>
                                     <th class="py-3 small fw-semibold text-muted">Diajukan Oleh</th>
                                     <th class="py-3 small fw-semibold text-muted">Tanggal</th>
@@ -139,7 +139,7 @@
                                     @php $cfg = \App\Models\PengajuanPtk::$statusConfig[$pgj->status] ?? ['label' => $pgj->status, 'class' => 'bg-secondary', 'icon' => ''] @endphp
                                     <tr>
                                         <td class="ps-4 text-muted small">{{ $i + 1 }}</td>
-                                        <td class="fw-semibold">{{ $pgj->nama_ptk }}</td>
+                                        <td class="fw-semibold">{{ $pgj->nomor_pengajuan }}</td>
                                         <td>
                                             <span class="badge bg-light text-dark border small">
                                                 {{ $pgj->kategori->jenis_kategori ?? '-' }}

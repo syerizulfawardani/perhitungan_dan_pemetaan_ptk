@@ -56,8 +56,9 @@ class PengajuanPtkController extends Controller
         $kategoris       = KategoriPTK::orderBy('jenis_kategori')->get();
         $bidangs         = BidangPTK::orderBy('nama_bidang_sertifikasi')->get();
         $sekolahOperator = Auth::user()->sekolah()->first();
+        $previewNomor = PengajuanPtk::previewNomor();
 
-        return view('dashboard.pengajuan.create', compact('kategoris', 'bidangs', 'sekolahOperator'));
+        return view('dashboard.pengajuan.create', compact('kategoris', 'bidangs', 'sekolahOperator', 'previewNomor'));
     }
 
     // ── Store ────────────────────────────────────────────────
@@ -70,9 +71,7 @@ class PengajuanPtkController extends Controller
             'alasan_pengajuan' => 'required|string|min:10',
         ]);
 
-        $sekolah = Auth::user()->sekolah()->first();
-
-        $validated['nama_ptk']        = $sekolah?->nama_sekolah ?? Auth::user()->name;
+        $validated['nomor_pengajuan']        = PengajuanPtk::generateNomor();
         $validated['tmt_pengangkatan'] = now()->toDateString();
         $validated['operator_id']      = Auth::id();
         $validated['diproses_oleh']    = Auth::id();
@@ -81,9 +80,11 @@ class PengajuanPtkController extends Controller
 
         PengajuanPtk::create($validated);
 
+        $nomorPengajuan = PengajuanPtk::first('nomor_pengajuan');
+
         return redirect()
             ->route('pengajuan-ptk.index')
-            ->with('success', 'Pengajuan PTK berhasil diajukan.');
+            ->with('success', "Pengajuan PTK berhasil diajukan");
     }
 
     // ── Show ─────────────────────────────────────────────────

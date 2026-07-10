@@ -41,18 +41,12 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-12">
-                            <p class="text-muted small mb-1">Nama Lengkap PTK</p>
-                            <p class="fw-semibold fs-5 mb-0">{{ $pengajuanPtk->nama_ptk }}</p>
+                            <p class="text-muted small mb-1">Nomor Pengajuan</p>
+                            <p class="fw-semibold fs-5 mb-0">{{ $pengajuanPtk->nomor_pengajuan }}</p>
                         </div>
                         <div class="col-md-6">
                             <p class="text-muted small mb-1">Kategori PTK</p>
                             <p class="fw-semibold mb-0">{{ $pengajuanPtk->kategori->jenis_kategori ?? '-' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="text-muted small mb-1">TMT Pengangkatan</p>
-                            <p class="fw-semibold mb-0">
-                                {{ $pengajuanPtk->tmt_pengangkatan?->format('d M Y') }}
-                            </p>
                         </div>
                         <div class="col-12">
                             <p class="text-muted small mb-1">Alasan Pengajuan</p>

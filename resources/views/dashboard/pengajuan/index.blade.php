@@ -7,7 +7,7 @@
             <h4 class="mb-0 fw-semibold">Pengajuan PTK</h4>
             <p class="text-muted mb-0 small">Permintaan pengusulan Pendidik dan Tenaga Kependidikan</p>
         </div>
-        @can('menage pengajuan')
+        @can('manage pengajuan')
         <a href="{{ route('pengajuan-ptk.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
             <i class="ti ti-plus fs-5"></i> Buat Pengajuan
         </a>
@@ -61,11 +61,11 @@
         <div class="card-body">
             <form method="GET" action="{{ route('pengajuan-ptk.index') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Nama Sekolah</label>
+                    <label class="form-label small fw-semibold">Cari</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                         <input type="text" name="search" class="form-control"
-                               placeholder="Cari Nama Sekolah..." value="{{ request('search') }}">
+                               placeholder="Cari nama sekolah atau nomor..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -110,14 +110,14 @@
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4" style="width:50px">#</th>
-                            <th>Sekolah</th>
+                            <th>Nomor Pengajuan</th>
                             <th>Kategori</th>
-                            <th>Tanggal Pengajuan</th>
+                            <th>Tanggal</th>
                             @role('admin')
                             <th>Diajukan Oleh</th>
                             @endrole
                             <th>Status</th>
-                            <th class="text-center pe-4">Aksi</th>
+                            <th class="text-center pe-4" style="width:140px">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,18 +127,27 @@
                                 <td class="ps-4 text-muted small">
                                     {{ $pengajuans->firstItem() + $loop->index }}
                                 </td>
-                                <td class="fw-semibold">{{ $item->nama_ptk }}</td>
+                                {{-- Nomor Pengajuan --}}
+                                <td>
+                                    <span class="fw-semibold text-primary small">
+                                        <i class="ti ti-hash me-1"></i>{{ $item->nomor_pengajuan }}
+                                    </span>
+                                </td>
+                                {{-- Kategori --}}
                                 <td>
                                     <span class="badge bg-light text-dark border small">
                                         {{ $item->kategori->jenis_kategori ?? '-' }}
                                     </span>
                                 </td>
+                                {{-- Tanggal --}}
                                 <td class="text-muted small">
                                     {{ $item->tmt_pengangkatan?->format('d M Y') }}
                                 </td>
                                 @role('admin')
+                                {{-- Diajukan Oleh --}}
                                 <td class="small">{{ $item->operator->name ?? '-' }}</td>
                                 @endrole
+                                {{-- Status --}}
                                 <td>
                                     @if ($cfg)
                                         <span class="badge {{ $cfg['class'] }}">
@@ -146,13 +155,14 @@
                                         </span>
                                     @endif
                                 </td>
+                                {{-- Aksi --}}
                                 <td class="text-center pe-4">
                                     <div class="d-flex justify-content-center gap-1">
                                         <a href="{{ route('pengajuan-ptk.show', $item) }}"
                                            class="btn btn-sm btn-outline-info" title="Detail">
                                             <i class="ti ti-eye"></i>
                                         </a>
-                                        @role("operator_sekolah")
+                                        @role('operator_sekolah')
                                         @if (in_array($item->status, ['menunggu', 'ditolak']))
                                             <a href="{{ route('pengajuan-ptk.edit', $item) }}"
                                                class="btn btn-sm btn-outline-warning" title="Edit">
@@ -194,12 +204,11 @@
                         <strong>{{ $pengajuans->total() }}</strong>
                         data.
                     </div>
-
                     <div>
                         {{ $pengajuans->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
-            </div
+            </div>
         </div>
     </div>
 

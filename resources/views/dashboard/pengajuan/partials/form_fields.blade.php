@@ -1,33 +1,76 @@
-{{-- resources/views/pengajuan_ptk/partials/form_fields.blade.php --}}
-{{-- Dipakai di create.blade.php dan edit.blade.php --}}
-{{-- Variabel tersedia: $kategoris, $bidangs, $sekolahOperator --}}
-{{-- Jika edit: $pengajuanPtk tersedia --}}
-
 @php $old = $pengajuanPtk ?? null; @endphp
 
 <div class="row g-3">
+
+    {{-- Nomor Pengajuan (otomatis) --}}
+    <div class="col-12">
+        <label class="form-label fw-semibold">
+            Nomor Pengajuan
+        </label>
+        @if($old)
+            {{-- Mode EDIT: tampilkan nomor yang sudah ada --}}
+            <div class="input-group">
+                <span class="input-group-text bg-primary text-white">
+                    <i class="ti ti-hash"></i>
+                </span>
+                <input type="text"
+                       class="form-control bg-light fw-medium"
+                       value="{{ $old->nomor_pengajuan }}"
+                       readonly>
+                <span class="input-group-text bg-light text-muted">
+                    <i class="ti ti-lock"></i>
+                </span>
+            </div>
+        @else
+            {{-- Mode CREATE: tampilkan preview nomor --}}
+            <div class="input-group">
+                <span class="input-group-text bg-primary text-white">
+                    <i class="ti ti-hash"></i>
+                </span>
+                <input type="text"
+                       class="form-control bg-light fw-medium"
+                       value="{{ $previewNomor ?? '-' }}"
+                       readonly>
+                <span class="input-group-text bg-light text-success">
+                    <i class="ti ti-sparkles"></i> Otomatis
+                </span>
+            </div>
+            <div class="form-text">
+                <i class="ti ti-info-circle me-1"></i>Nomor dibuat otomatis saat pengajuan disimpan
+            </div>
+        @endif
+    </div>
 
     {{-- Nama Sekolah (otomatis dari akun operator, tidak bisa diubah) --}}
     <div class="col-md-8">
         <label class="form-label fw-semibold">
             Nama Sekolah
         </label>
-        <input type="text"
-               class="form-control bg-light"
-               value="{{ $sekolahOperator?->nama_sekolah ?? '-' }}"
-               readonly>
+        <div class="input-group">
+            <span class="input-group-text bg-secondary text-white">
+                <i class="ti ti-school"></i>
+            </span>
+            <input type="text"
+                   class="form-control bg-light"
+                   value="{{ $sekolahOperator?->nama_sekolah ?? '-' }}"
+                   readonly>
+        </div>
     </div>
 
     {{-- Tanggal Pengajuan --}}
     <div class="col-md-4">
         <label class="form-label fw-semibold">
-            Tanggal Pengajuan <span class="text-danger">*</span>
+            Tanggal Pengajuan
         </label>
-        <input type="date" name="tmt_pengangkatan"
-               class="form-control @error('tmt_pengangkatan') is-invalid @enderror"
-               value="{{ old('tmt_pengangkatan', $old?->tmt_pengangkatan?->format('Y-m-d') ?? now()->format('Y-m-d')) }}"
-               readonly>
-        @error('tmt_pengangkatan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        <div class="input-group">
+            <span class="input-group-text bg-secondary text-white">
+                <i class="ti ti-calendar"></i>
+            </span>
+            <input type="date" name="tmt_pengangkatan"
+                   class="form-control bg-light"
+                   value="{{ old('tmt_pengangkatan', $old?->tmt_pengangkatan?->format('Y-m-d') ?? now()->format('Y-m-d')) }}"
+                   readonly>
+        </div>
     </div>
 
     {{-- Kategori --}}
