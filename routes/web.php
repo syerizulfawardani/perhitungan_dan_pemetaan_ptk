@@ -48,6 +48,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/sekolah/edit/{id}', [SekolahController::class, 'edit'])->name('sekolah.edit');
         Route::put('/sekolah/{id}', [SekolahController::class, 'update'])->name('sekolah.update');
         Route::delete('/sekolah/destroy/{id}', [SekolahController::class, 'destroy'])->name('sekolah.destroy');
+        Route::post('/sekolah/import', [SekolahController::class, 'import'])->name('sekolah.import');
 
         // Kategori PTK (AJAX)
         Route::post('/kategori', [KategoriPTKController::class, 'store'])->name('kategori.store');
