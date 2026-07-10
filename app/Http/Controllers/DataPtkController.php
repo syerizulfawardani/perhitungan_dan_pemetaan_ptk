@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DataPtkImport;
 use App\Models\BidangPTK;
 use App\Models\DataPTK;
 use App\Models\JabatanPTK;
@@ -10,6 +11,7 @@ use App\Models\KategoriPTK;
 use App\Models\PangkatPTK;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataPTKController extends Controller
 {
@@ -123,5 +125,27 @@ class DataPTKController extends Controller
         $ptk->delete();
 
         return redirect()->route('data-ptk')->with('success', 'Data PTK berhasil dihapus.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:5120',
+        ]);
+
+        $import = new DataPtkImport;
+        Excel::import($import, $request->file('file'));
+
+        $gagal = $import->failures();
+
+        if ($gagal->isNotEmpty()) {
+            $pesan = $gagal->map(fn ($f) =>
+                "Baris {$f->row()}: " . implode('. ', $f->errors())
+            )->implode(' | ');
+
+            return back()->with('error', "Sebagian data gagal - {$pesan}");
+        }
+
+        return back()->with('success', 'Data PTK berhasil diimport.');
     }
 }

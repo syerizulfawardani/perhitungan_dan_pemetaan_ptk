@@ -179,6 +179,7 @@ class SekolahController extends Controller
 
         return redirect()->route('sekolah')->with('seccess', 'Sekolah berhasil dihapus.');
     }
+
     public function import(Request $request)
     {
         $request->validate([
@@ -192,13 +193,12 @@ class SekolahController extends Controller
 
         if ($gagal->isNotEmpty()) {
             $pesan = $gagal->map(fn ($f) =>
-                "Baris {$f->row()}:" . implode('.', $f->errors())
-            )->implode('|');
+                "Baris {$f->row()}: " . implode('. ', $f->errors())
+            )->implode(' | ');
 
             return back()->with('error', "Sebagian data gagal - {$pesan}");
         }
 
-    return back()->with('success', "Data sekolah berhasil diimport.");
+        return back()->with('success', "Data sekolah berhasil diimport.");
     }
-
 }
