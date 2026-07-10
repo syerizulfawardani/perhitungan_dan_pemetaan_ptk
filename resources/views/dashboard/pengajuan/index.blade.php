@@ -7,11 +7,11 @@
             <h4 class="mb-0 fw-semibold">Pengajuan PTK</h4>
             <p class="text-muted mb-0 small">Permintaan pengusulan Pendidik dan Tenaga Kependidikan</p>
         </div>
-        @can('manage pengajuan')
+        @role('operator_sekolah')
         <a href="{{ route('pengajuan-ptk.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
             <i class="ti ti-plus fs-5"></i> Buat Pengajuan
         </a>
-        @endcan
+        @endrole
     </div>
 
     {{-- Alert --}}
