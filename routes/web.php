@@ -48,6 +48,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/sekolah/edit/{id}', [SekolahController::class, 'edit'])->name('sekolah.edit');
         Route::put('/sekolah/{id}', [SekolahController::class, 'update'])->name('sekolah.update');
         Route::delete('/sekolah/destroy/{id}', [SekolahController::class, 'destroy'])->name('sekolah.destroy');
+        Route::post('/sekolah/import', [SekolahController::class, 'import'])->name('sekolah.import');
 
         // Kategori PTK (AJAX)
         Route::post('/kategori', [KategoriPTKController::class, 'store'])->name('kategori.store');
@@ -56,6 +57,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/data-ptk', [DataPTKController::class, 'index'])->name('data-ptk');
         Route::get('/data-ptk/create', [DataPTKController::class, 'create'])->name('data-ptk.create');
         Route::post('/data-ptk', [DataPTKController::class, 'store'])->name('data-ptk.store');
+        Route::post('/data-ptk/import', [DataPTKController::class, 'import'])->name('data-ptk.import');
         Route::get('/data-ptk/show/{id}', [DataPTKController::class, 'show'])->name('data-ptk.show');
         Route::get('/data-ptk/edit/{id}', [DataPTKController::class, 'edit'])->name('data-ptk.edit');
         Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
