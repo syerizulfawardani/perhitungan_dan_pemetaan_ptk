@@ -23,6 +23,7 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
     use SkipsFailures;
 
     protected $sekolahMap;
+    protected $sekolahByNpsn;
     protected $sekolahKecamatan;
     protected $kategoriMap;
     protected $jabatanMap;
@@ -33,6 +34,9 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
     {
         $this->sekolahMap = Sekolah::pluck('id', 'nama_sekolah')
             ->mapWithKeys(fn ($id, $nama) => [Str::lower(trim($nama)) => $id]);
+
+        $this->sekolahByNpsn = Sekolah::pluck('id', 'npsn_sekolah')
+            ->mapWithKeys(fn ($id, $npsn) => [trim((string) $npsn) => $id]);
 
         $this->sekolahKecamatan = Sekolah::pluck('kecamatan_id', 'id');
 
@@ -51,8 +55,12 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
 
     public function model(array $row)
     {
+        // Cocokkan sekolah: utamakan NPSN (akurat), fallback ke nama
+        $npsn        = trim((string) ($row['npsn'] ?? ''));
         $namaSekolah = Str::lower(trim($row['nama_sekolah'] ?? ''));
-        $sekolahId   = $this->sekolahMap[$namaSekolah] ?? null;
+        $sekolahId   = $this->sekolahByNpsn[$npsn]
+            ?? $this->sekolahMap[$namaSekolah]
+            ?? null;
 
         return new DataPTK([
             'nama_ptk'            => trim($row['nama_ptk']),
