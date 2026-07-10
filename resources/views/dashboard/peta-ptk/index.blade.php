@@ -91,12 +91,22 @@
     function popupContent(nama) {
         const total   = currentData[nama] ?? 0;
         const sekolah = sekolahData[nama] ?? { paud: 0, sd: 0, smp: 0 };
+        const ptkPaud = datasets.paud[nama] ?? 0;
+        const ptkSd   = datasets.sd[nama]   ?? 0;
+        const ptkSmp  = datasets.smp[nama]  ?? 0;
+        const ptkTotal = datasets.semua[nama] ?? 0;
         return `
             <div style="min-width:190px">
                 <strong style="font-size:14px">${nama}</strong><br>
                 <span style="color:#666;font-size:12px">Kabupaten Ketapang</span>
                 <hr style="margin:6px 0">
-                <div style="font-size:13px">Jumlah PTK (${datasetLabels[currentDatasetKey]}): <b style="color:#0066cc">${total}</b></div>
+                <div style="font-size:12px;font-weight:600;margin-bottom:3px">Jumlah PTK per Jenjang</div>
+                <table style="font-size:12px;width:100%;border-collapse:collapse">
+                    <tr><td>PAUD</td><td style="text-align:right;font-weight:600">${ptkPaud}</td></tr>
+                    <tr><td>SD</td><td style="text-align:right;font-weight:600">${ptkSd}</td></tr>
+                    <tr><td>SMP</td><td style="text-align:right;font-weight:600">${ptkSmp}</td></tr>
+                    <tr style="border-top:1px solid #eee"><td style="padding-top:3px">Total</td><td style="text-align:right;font-weight:700;color:#0066cc;padding-top:3px">${ptkTotal}</td></tr>
+                </table>
                 <hr style="margin:6px 0">
                 <div style="font-size:12px;font-weight:600;margin-bottom:3px">Jumlah Sekolah</div>
                 <table style="font-size:12px;width:100%;border-collapse:collapse">

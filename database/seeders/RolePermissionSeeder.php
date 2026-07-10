@@ -24,7 +24,9 @@ class RolePermissionSeeder extends Seeder
         $admin = Role::create(['name' => 'admin']);
         $operator_sekolah = Role::create(['name' => 'operator_sekolah']);
 
-        $admin->givePermissionTo(Permission::all());
+        $admin->givePermissionTo(
+            Permission::all()->reject(fn ($permission) => $permission->name === 'menage pengajuan')
+        );
         $operator_sekolah->givePermissionTo([
             'menage data sekolah',
             'menage pengajuan',
