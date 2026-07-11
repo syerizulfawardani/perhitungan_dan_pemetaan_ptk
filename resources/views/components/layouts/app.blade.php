@@ -69,6 +69,35 @@
       });
     @endif
   </script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   {{-- Handler global: konfirmasi hapus data pakai SweetAlert --}}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.js-delete-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const confirmText = form.dataset.confirmText || 'Data ini tidak dapat dikembalikan setelah dihapus.';
+
+          Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
 
   @stack('scripts')
 </body>
