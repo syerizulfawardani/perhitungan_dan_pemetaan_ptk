@@ -203,11 +203,12 @@
                     <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning flex-fill flex-sm-grow-0 d-flex align-items-center justify-content-center gap-2">
                         <i class="ti ti-pencil fs-5"></i> Edit Data
                     </a>
-                    <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" id="deleteForm">
+                    <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST"
+                        class="js-delete-form"
+                        data-confirm-text="Data PTK ini akan dihapus permanen dan tidak dapat dikembalikan.">
                         @csrf
                         @method('DELETE')
-                        <button type="button" class="btn btn-danger d-flex align-items-center gap-2"
-                            onclick="confirmDelete()">
+                        <button type="submit" class="btn btn-danger d-flex align-items-center gap-2">
                             <i class="ti ti-trash fs-5"></i> Hapus
                         </button>
                     </form>
@@ -220,13 +221,4 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
-        function confirmDelete() {
-            if (confirm('Yakin ingin menghapus data PTK ini? Tindakan ini tidak dapat dibatalkan.')) {
-                document.getElementById('deleteForm').submit();
-            }
-        }
-    </script>
-    @endpush
 </x-layouts.app>

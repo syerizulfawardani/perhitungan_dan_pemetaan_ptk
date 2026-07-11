@@ -170,7 +170,8 @@
                                             </a>
                                             <form action="{{ route('pengajuan-ptk.destroy', $item) }}"
                                                   method="POST"
-                                                  onsubmit="return confirm('Yakin hapus pengajuan ini?')">
+                                                  class="js-delete-form"
+                                                  data-confirm-text="Pengajuan ini akan dihapus permanen.">
                                                 @csrf @method('DELETE')
                                                 <button class="btn btn-sm btn-outline-danger" title="Hapus">
                                                     <i class="ti ti-trash"></i>

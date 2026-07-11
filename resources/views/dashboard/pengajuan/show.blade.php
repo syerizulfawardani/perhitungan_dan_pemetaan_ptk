@@ -74,7 +74,8 @@
                         <i class="ti ti-pencil me-1"></i>Edit
                     </a>
                     <form action="{{ route('pengajuan-ptk.destroy', $pengajuanPtk) }}" method="POST"
-                          onsubmit="return confirm('Yakin hapus pengajuan ini?')">
+                          class="js-delete-form"
+                          data-confirm-text="Pengajuan ini akan dihapus permanen.">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-danger">
                             <i class="ti ti-trash me-1"></i>Hapus

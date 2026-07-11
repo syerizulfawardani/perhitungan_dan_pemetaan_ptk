@@ -152,26 +152,6 @@
 
         @push('scripts')
             <script>
-                document.querySelectorAll('.form-hapus').forEach(function(form) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        Swal.fire({
-                            title: 'Yakin ingin menghapus data ini?',
-                            text: 'Data yang dihapus tidak bisa dikembalikan!',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#6c757d',
-                            confirmButtonText: 'Ya, hapus!',
-                            cancelButtonText: 'Batal',
-                        }).then(function(result) {
-                            if (result.isConfirmed) {
-                                form.submit();
-                            }
-                        });
-                    });
-                });
-
                 // Import Excel: setelah file dipilih, konfirmasi lalu submit otomatis
                 document.getElementById('input-import-ptk').addEventListener('change', function() {
                     if (this.files.length === 0) return;

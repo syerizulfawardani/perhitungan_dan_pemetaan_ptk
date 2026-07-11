@@ -15,7 +15,7 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Kecamatan</h4>
                         <p class="text-muted mb-0">
-                            Kelola data kecamatan beserta kabupaten terkait.
+                            Kelola Data Kecamatan Beserta Kabupaten Terkait
                         </p>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                        <thead class="table-white">
                             <tr class="text-center">
                                 <th width="70">No</th>
                                 <th>Nama Kecamatan</th>
@@ -45,28 +45,27 @@
                         <tbody>
                             @forelse ($kecamatan as $k)
                                 <tr>
-                                    <td class="text-center fw-semibold">
+                                    <td class="text-center text-dark">
                                         {{ $kecamatan->firstItem() + $loop->index }}
                                     </td>
 
                                     <td>
-                                        <div class="text-center fw-semibold text-dark">
+                                        <div class="text-center text-dark">
                                             {{ $k->nama_kecamatan }}
                                         </div>
                                     </td>
-
                                     <td class="text-center">
-                                        <span class="text-center badge bg-light text-dark border px-3 py-2">
+                                        <span class="text-dark">
                                             {{ $k->kabupaten->nama_kabupaten }}
                                         </span>
                                     </td>
-
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
 
                                             {{-- Delete --}}
                                             <form action="{{ route('kecamatan.destroy', $k->id) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                class="js-delete-form"
+                                                data-confirm-text="Data kecamatan yang dihapus tidak dapat dikembalikan">
                                                 @csrf
                                                 @method('DELETE')
 
@@ -82,7 +81,7 @@
                                     <td colspan="4" class="text-center py-5">
                                         <div class="d-flex flex-column align-items-center text-muted">
                                             <i class="ti ti-database-off fs-1 mb-2"></i>
-                                            <span>Data kecamatan tidak ditemukan.</span>
+                                            <span>Data kecamatan Tidak Ditemukan</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,9 +99,9 @@
                         <strong>{{ $kecamatan->firstItem() ?? 0 }}</strong>
                         -
                         <strong>{{ $kecamatan->lastItem() ?? 0 }}</strong>
-                        dari
+                        Dari
                         <strong>{{ $kecamatan->total() }}</strong>
-                        data.
+                        Data
                     </div>
 
                     <div>
