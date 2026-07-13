@@ -3,68 +3,147 @@
     {{-- Page Header --}}
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h4 class="fw-semibold mb-1">Dashboard</h4>
-            <p class="text-muted mb-0 small">{{ now()->translatedFormat('l, d F Y') }} &mdash; Selamat datang, {{ Auth::user()->name }}</p>
+            <h4 class="fw-semibold mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
+            <p class="text-muted mb-0 small">
+                {{ now()->translatedFormat('l, d F Y') }} &middot;
+                @if ($isAdmin)
+                    <span class="badge bg-primary bg-opacity-10 text-primary"></span>
+                @else
+                    <span class="badge bg-info bg-opacity-10 text-info">Operator Sekolah</span>
+                @endif
+            </p>
         </div>
     </div>
 
     {{-- ── Stat Cards ────────────────────────────────────────── --}}
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-users fs-4 text-primary"></i>
+    @if ($isAdmin)
+        {{-- Admin: data global, 5 card --}}
+        <div class="row row-cols-2 row-cols-xl-5 g-3 mb-4">
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-users fs-4 text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalPtk) }}</div>
+                            <div class="text-muted small">Total PTK</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="fw-bold fs-3">{{ number_format($totalPtk) }}</div>
-                        <div class="text-muted small">Total PTK</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-success bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-school fs-4 text-success"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalSekolah) }}</div>
+                            <div class="text-muted small">Total Sekolah</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-map-pin fs-4 text-secondary"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalKecamatan) }}</div>
+                            <div class="text-muted small">Total Kecamatan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-info bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-file-description fs-4 text-info"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalPengajuan) }}</div>
+                            <div class="text-muted small">Total Pengajuan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-warning bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-clock fs-4 text-warning"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($pengajuanMenunggu) }}</div>
+                            <div class="text-muted small">Perlu Diproses</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-success bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-school fs-4 text-success"></i>
+    @else
+        {{-- Operator: data scoped ke sekolah miliknya, 4 card --}}
+        <div class="row row-cols-2 row-cols-xl-4 g-3 mb-4">
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-users fs-4 text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalPtk) }}</div>
+                            <div class="text-muted small">PTK Sekolah Saya</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="fw-bold fs-3">{{ number_format($totalSekolah) }}</div>
-                        <div class="text-muted small">Total Sekolah</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-success bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-school fs-4 text-success"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalSekolah) }}</div>
+                            <div class="text-muted small">Sekolah Saya</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-info bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-file-description fs-4 text-info"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($totalPengajuan) }}</div>
+                            <div class="text-muted small">Pengajuan Saya</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-warning bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
+                            <i class="ti ti-clock fs-4 text-warning"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold fs-3">{{ number_format($pengajuanMenunggu) }}</div>
+                            <div class="text-muted small">Perlu Diproses</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-info bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-file-description fs-4 text-info"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold fs-3">{{ number_format($totalPengajuan) }}</div>
-                        <div class="text-muted small">Total Pengajuan</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-warning bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-clock fs-4 text-warning"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold fs-3">{{ number_format($pengajuanMenunggu) }}</div>
-                        <div class="text-muted small">Perlu Diproses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endif
 
-    {{-- ── Chart + PTK per Kategori ──────────────────────────── --}}
+    {{-- ── Chart + PTK per Kategori (isi sama, datanya sudah discope di controller) ── --}}
     <div class="row g-3 mb-4">
         <div class="col-12 col-lg-8">
             <div class="card border-0 shadow-sm h-100">
@@ -116,7 +195,9 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom d-flex align-items-center justify-content-between py-3">
-                    <h6 class="mb-0 fw-semibold">Pengajuan PTK Terbaru</h6>
+                    <h6 class="mb-0 fw-semibold">
+                        {{ $isAdmin ? 'Pengajuan PTK Terbaru' : 'Pengajuan PTK Terbaru Saya' }}
+                    </h6>
                     <a href="{{ route('pengajuan-ptk.index') }}" class="btn btn-sm btn-outline-primary">
                         Lihat Semua
                     </a>
@@ -124,12 +205,14 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
+                            <thead class="table-white">
                                 <tr>
                                     <th class="ps-4 py-3 small fw-semibold text-muted">#</th>
                                     <th class="py-3 small fw-semibold text-muted">Nomor Pengajuan</th>
                                     <th class="py-3 small fw-semibold text-muted">Kategori</th>
-                                    <th class="py-3 small fw-semibold text-muted">Diajukan Oleh</th>
+                                    @if ($isAdmin)
+                                        <th class="py-3 small fw-semibold text-muted">Diajukan Oleh</th>
+                                    @endif
                                     <th class="py-3 small fw-semibold text-muted">Tanggal</th>
                                     <th class="py-3 small fw-semibold text-muted">Status</th>
                                 </tr>
@@ -145,7 +228,9 @@
                                                 {{ $pgj->kategori->jenis_kategori ?? '-' }}
                                             </span>
                                         </td>
-                                        <td class="small">{{ $pgj->operator->name ?? '-' }}</td>
+                                        @if ($isAdmin)
+                                            <td class="small">{{ $pgj->operator->name ?? '-' }}</td>
+                                        @endif
                                         <td class="small text-muted">{{ $pgj->created_at->translatedFormat('d M Y') }}</td>
                                         <td>
                                             <span class="badge {{ $cfg['class'] }}">
@@ -155,7 +240,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-5 text-muted">
+                                        <td colspan="{{ $isAdmin ? 6 : 5 }}" class="text-center py-5 text-muted">
                                             <i class="ti ti-inbox fs-1 d-block mb-2"></i>
                                             Belum ada pengajuan PTK
                                         </td>

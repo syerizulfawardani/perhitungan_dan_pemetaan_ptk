@@ -1,22 +1,13 @@
 <x-layouts.app>
     <div class="container-fluid">
 
-        {{-- Breadcrumb --}}
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h4 class="mb-1 fw-semibold">Detail PTK</h4>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk') }}" class="text-muted text-decoration-none">Data PTK</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('data-ptk') }}" class="btn btn-light d-flex align-items-center gap-1">
+        {{-- Header Card --}}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark d-flex align-items-center justify-content-between">
+                <h5 class="mb-0 text-white fw-semibold">Detail Data Pendidik & Tenaga Kependidikan</h5>
+                <a href="{{ route('data-ptk') }}" class="btn btn-light btn-sm d-flex align-items-center gap-1">
                     <i class="ti ti-arrow-left fs-5"></i>
-                    <span class="d-none d-sm-inline">Kembali</span>
+                    <span>Kembali</span>
                 </a>
             </div>
         </div>
@@ -75,10 +66,13 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover table-bordered mb-0">
+                                <thead class="table-light">
+                                    
+                                </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="ps-4 py-3 text-muted" style="width: 40%;">
+                                        <td class="ps-4 py-3 text-muted">
                                             <div class="d-flex align-items-center gap-2">
                                                 <i class="ti ti-user text-primary fs-5"></i>
                                                 Nama Lengkap
@@ -134,7 +128,7 @@
                                         <td class="ps-4 py-3 text-muted">
                                             <div class="d-flex align-items-center gap-2">
                                                 <i class="ti ti-school text-primary fs-5"></i>
-                                                Bidang Sertifikasi
+                                                Bidang Studi
                                             </div>
                                         </td>
                                         <td class="py-3 fw-medium">{{ $ptk->bidang->nama_bidang_sertifikasi ?? '-' }}</td>

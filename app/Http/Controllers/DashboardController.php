@@ -14,7 +14,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $isAdmin    = Auth::user()->hasRole('admin');
+        $user = Auth::user();
+
+        $isAdmin = $user->hasRole('admin');
+
+        // Kalau bukan admin, pastikan dia memang operator_sekolah.
+        // Kalau user tidak punya kedua role ini, tolak akses.
+        if (! $isAdmin && ! $user->hasRole('operator_sekolah')) {
+            abort(403, 'Role Anda tidak memiliki akses ke dashboard ini.');
+        }
+
         $operatorId = Auth::id();
 
         // Query dasar pengajuan — admin lihat semua, operator hanya miliknya
@@ -67,7 +76,7 @@ class DashboardController extends Controller
             ->take(6)
             ->get();
 
-        return view('dashboard.index', compact(
+        $data = compact(
             'totalPtk',
             'totalSekolah',
             'totalPengajuan',
@@ -76,45 +85,48 @@ class DashboardController extends Controller
             'ptkPerKategori',
             'pengajuanPerBulan',
             'pengajuanTerbaru',
-        ));
+            'isAdmin',
+        );
+
+        return view('dashboard.index', $data);
     }
 
     public function petaPtk()
-{
-    // Total keseluruhan (tetap pakai query lama, tidak berubah)
-    $ptkPerKecamatan = DB::table('kecamatan')
-        ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
-        ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
-        ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
-        ->get()
-        ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
+    {
+        // Total keseluruhan (tetap pakai query lama, tidak berubah)
+        $ptkPerKecamatan = DB::table('kecamatan')
+            ->leftJoin('data_ptk', 'data_ptk.kecamatan_id', '=', 'kecamatan.id')
+            ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
+            ->select('kecamatan.nama_kecamatan', DB::raw('COUNT(data_ptk.id) as total_ptk'))
+            ->get()
+            ->mapWithKeys(fn($row) => [$row->nama_kecamatan => (int) $row->total_ptk]);
 
-    // Breakdown per jenjang (PAUD, SD, SMP)
-    $ptkPaud = $this->getPtkPerJenjang('PAUD');
-    $ptkSd   = $this->getPtkPerJenjang('SD');
-    $ptkSmp  = $this->getPtkPerJenjang('SMP');
+        // Breakdown per jenjang (PAUD, SD, SMP)
+        $ptkPaud = $this->getPtkPerJenjang('PAUD');
+        $ptkSd   = $this->getPtkPerJenjang('SD');
+        $ptkSmp  = $this->getPtkPerJenjang('SMP');
 
-    // Jumlah sekolah per kecamatan per jenjang (untuk popup peta)
-    $sekolahPerKecamatan = DB::table('kecamatan')
-        ->leftJoin('sekolah', 'sekolah.kecamatan_id', '=', 'kecamatan.id')
-        ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
-        ->select(
-            'kecamatan.nama_kecamatan',
-            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'PAUD' THEN 1 ELSE 0 END) as paud"),
-            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SD' THEN 1 ELSE 0 END) as sd"),
-            DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SMP' THEN 1 ELSE 0 END) as smp")
-        )
-        ->get()
-        ->mapWithKeys(fn($row) => [$row->nama_kecamatan => [
-            'paud' => (int) $row->paud,
-            'sd'   => (int) $row->sd,
-            'smp'  => (int) $row->smp,
-        ]]);
+        // Jumlah sekolah per kecamatan per jenjang (untuk popup peta)
+        $sekolahPerKecamatan = DB::table('kecamatan')
+            ->leftJoin('sekolah', 'sekolah.kecamatan_id', '=', 'kecamatan.id')
+            ->groupBy('kecamatan.id', 'kecamatan.nama_kecamatan')
+            ->select(
+                'kecamatan.nama_kecamatan',
+                DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'PAUD' THEN 1 ELSE 0 END) as paud"),
+                DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SD' THEN 1 ELSE 0 END) as sd"),
+                DB::raw("SUM(CASE WHEN sekolah.jenjang_sekolah = 'SMP' THEN 1 ELSE 0 END) as smp")
+            )
+            ->get()
+            ->mapWithKeys(fn($row) => [$row->nama_kecamatan => [
+                'paud' => (int) $row->paud,
+                'sd'   => (int) $row->sd,
+                'smp'  => (int) $row->smp,
+            ]]);
 
-    return view('dashboard.peta-ptk.index', compact(
-        'ptkPerKecamatan', 'ptkPaud', 'ptkSd', 'ptkSmp', 'sekolahPerKecamatan'
-    ));
-}
+        return view('dashboard.peta-ptk.index', compact(
+            'ptkPerKecamatan', 'ptkPaud', 'ptkSd', 'ptkSmp', 'sekolahPerKecamatan'
+        ));
+    }
 
     private function getPtkPerJenjang(string $jenjang)
     {

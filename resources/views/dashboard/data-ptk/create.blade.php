@@ -1,7 +1,7 @@
 <x-layouts.app>
     <div class="container-fluid">
         <div class="card shadow-sm">
-            <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+            <div class="card-header d-flex align-items-center justify-content-between bg-dark text-white">
                 <h3 class="card-title mb-0 text-white rounded">Tambah Pendidik & Tenaga Kependidikan</h3>
                 <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalKategori">
                     <i class="ti ti-plus"></i> Kategori

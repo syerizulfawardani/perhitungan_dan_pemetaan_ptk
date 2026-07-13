@@ -107,7 +107,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+                    <thead class="table-white">
                         <tr>
                             <th class="ps-4" style="width:50px">#</th>
                             <th>Nomor Pengajuan</th>
