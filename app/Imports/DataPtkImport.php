@@ -80,8 +80,8 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
             'nama_ptk'         => 'required|string|max:255',
             'kategori'         => 'required',
             'jabatan'          => 'required',
-            'bidang'           => 'required',
-            'pangkat_golongan' => 'required',
+            'bidang'           => 'nullable',
+            'pangkat_golongan' => 'nullable',
         ];
     }
 

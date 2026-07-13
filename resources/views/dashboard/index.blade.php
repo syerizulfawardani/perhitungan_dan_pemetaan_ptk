@@ -1,15 +1,39 @@
 <x-layouts.app>
 
+    @php $isAdmin = Auth::user()->hasRole('admin'); @endphp
+
     {{-- Page Header --}}
-    <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-4">
         <div>
-            <h4 class="fw-semibold mb-1">Dashboard</h4>
+            <h4 class="fw-semibold mb-1">Dashboard {{ $isAdmin ? 'Admin' : 'Operator Sekolah' }}</h4>
             <p class="text-muted mb-0 small">{{ now()->translatedFormat('l, d F Y') }} &mdash; Selamat datang, {{ Auth::user()->name }}</p>
+        </div>
+
+        {{-- Quick actions per role --}}
+        <div class="d-flex gap-2 flex-wrap">
+            @role('admin')
+                <a href="{{ route('peta-ptk') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-map me-1"></i> Peta PTK
+                </a>
+                <a href="{{ route('pengajuan-ptk.index') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-checklist me-1"></i> Validasi Pengajuan
+                </a>
+            @endrole
+            @role('operator_sekolah')
+                <a href="{{ route('sekolah.my') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-school me-1"></i> Sekolah Saya
+                </a>
+                <a href="{{ route('pengajuan-ptk.create') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-plus me-1"></i> Ajukan Pengajuan
+                </a>
+            @endrole
         </div>
     </div>
 
     {{-- ── Stat Cards ────────────────────────────────────────── --}}
     <div class="row g-3 mb-4">
+
+        {{-- Card 1: PTK --}}
         <div class="col-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center gap-3">
@@ -18,11 +42,13 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-3">{{ number_format($totalPtk) }}</div>
-                        <div class="text-muted small">Total PTK</div>
+                        <div class="text-muted small">{{ $isAdmin ? 'Total PTK' : 'PTK Sekolah Saya' }}</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Card 2: Sekolah --}}
         <div class="col-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center gap-3">
@@ -31,24 +57,28 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-3">{{ number_format($totalSekolah) }}</div>
-                        <div class="text-muted small">Total Sekolah</div>
+                        <div class="text-muted small">{{ $isAdmin ? 'Total Sekolah' : 'Sekolah Saya' }}</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Card 3: admin -> Kecamatan | operator -> Total Pengajuan --}}
         <div class="col-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center gap-3">
                     <div class="rounded-circle d-flex align-items-center justify-content-center bg-info bg-opacity-10" style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-file-description fs-4 text-info"></i>
+                        <i class="ti {{ $isAdmin ? 'ti-map-pin' : 'ti-file-description' }} fs-4 text-info"></i>
                     </div>
                     <div>
-                        <div class="fw-bold fs-3">{{ number_format($totalPengajuan) }}</div>
-                        <div class="text-muted small">Total Pengajuan</div>
+                        <div class="fw-bold fs-3">{{ number_format($isAdmin ? $totalKecamatan : $totalPengajuan) }}</div>
+                        <div class="text-muted small">{{ $isAdmin ? 'Total Kecamatan' : 'Pengajuan Saya' }}</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Card 4: Menunggu / Perlu Diproses --}}
         <div class="col-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center gap-3">
@@ -57,7 +87,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-3">{{ number_format($pengajuanMenunggu) }}</div>
-                        <div class="text-muted small">Perlu Diproses</div>
+                        <div class="text-muted small">{{ $isAdmin ? 'Perlu Diproses' : 'Menunggu Diproses' }}</div>
                     </div>
                 </div>
             </div>
@@ -69,7 +99,7 @@
         <div class="col-12 col-lg-8">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-white border-bottom py-3">
-                    <h6 class="mb-0 fw-semibold">Pengajuan PTK per Bulan (12 Bulan Terakhir)</h6>
+                    <h6 class="mb-0 fw-semibold">{{ $isAdmin ? 'Pengajuan PTK' : 'Pengajuan Saya' }} per Bulan (12 Bulan Terakhir)</h6>
                 </div>
                 <div class="card-body">
                     <div id="chartPengajuan"></div>
