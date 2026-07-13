@@ -1,7 +1,9 @@
 <x-layouts.app>
 
+    @php $isAdmin = Auth::user()->hasRole('admin'); @endphp
+
     {{-- Page Header --}}
-    <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-4">
         <div>
             <h4 class="fw-semibold mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
             <p class="text-muted mb-0 small">
@@ -12,6 +14,26 @@
                     <span class="badge bg-info bg-opacity-10 text-info">Operator Sekolah</span>
                 @endif
             </p>
+        </div>
+
+        {{-- Quick actions per role --}}
+        <div class="d-flex gap-2 flex-wrap">
+            @role('admin')
+                <a href="{{ route('peta-ptk') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-map me-1"></i> Peta PTK
+                </a>
+                <a href="{{ route('pengajuan-ptk.index') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-checklist me-1"></i> Validasi Pengajuan
+                </a>
+            @endrole
+            @role('operator_sekolah')
+                <a href="{{ route('sekolah.my') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-school me-1"></i> Sekolah Saya
+                </a>
+                <a href="{{ route('pengajuan-ptk.create') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-plus me-1"></i> Ajukan Pengajuan
+                </a>
+            @endrole
         </div>
     </div>
 
@@ -148,7 +170,7 @@
         <div class="col-12 col-lg-8">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-white border-bottom py-3">
-                    <h6 class="mb-0 fw-semibold">Pengajuan PTK per Bulan (12 Bulan Terakhir)</h6>
+                    <h6 class="mb-0 fw-semibold">{{ $isAdmin ? 'Pengajuan PTK' : 'Pengajuan Saya' }} per Bulan (12 Bulan Terakhir)</h6>
                 </div>
                 <div class="card-body">
                     <div id="chartPengajuan"></div>
