@@ -29,6 +29,9 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
     protected $jabatanMap;
     protected $bidangMap;
     protected $pangkatMap;
+    protected $imported = 0;
+    protected $skipped = 0;
+    protected $existingPTK = [];
 
     public function __construct()
     {
@@ -51,6 +54,14 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
 
         $this->pangkatMap = PangkatPTK::pluck('id', 'nama_golongan')
             ->mapWithKeys(fn ($id, $nama) => [Str::lower(trim($nama)) => $id]);
+
+        $this->existingPTK = DataPTK::select('nama_ptk', 'sekolah_id')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [
+                    Str::lower(trim($item->nama_ptk)) . '-' . $item->sekolah_id => true
+                ];
+            });
     }
 
     public function model(array $row)
@@ -61,6 +72,16 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
         $sekolahId   = $this->sekolahByNpsn[$npsn]
             ?? $this->sekolahMap[$namaSekolah]
             ?? null;
+
+        $key = Str::lower(trim($row['nama_ptk'])) . '-' . $sekolahId;
+
+        if (isset($this->existingPTK[$key])) {
+            $this->skipped++;
+            return null;
+        }
+
+        $this->existingPTK[$key] = true;
+        $this->imported++;
 
         return new DataPTK([
             'nama_ptk'            => trim($row['nama_ptk']),
@@ -101,5 +122,15 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public function getImportedCount(): int
+    {
+        return $this->imported;
+    }
+
+    public function getSkippedCount(): int
+    {
+        return $this->skipped;
     }
 }

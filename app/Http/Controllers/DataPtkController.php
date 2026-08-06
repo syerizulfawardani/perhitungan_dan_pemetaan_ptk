@@ -15,27 +15,27 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DataPTKController extends Controller
 {
-   public function index(Request $request)
-{
-    $search   = $request->search;
-    $kategori = $request->kategori; // "Pendidik" | "Tenaga Kependidikan"
+    public function index(Request $request)
+    {
+        $search   = $request->search;
+        $kategori = $request->kategori; // "Pendidik" | "Tenaga Kependidikan"
 
-    $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
-        ->when($search, function ($query) use ($search) {
-            $query->where('nama_ptk', 'like', "%{$search}%")
-                  ->orWhere('jabatan_id', 'like', "%{$search}%");
-        })
-        ->when($kategori, function ($query) use ($kategori) {
-            $query->whereHas('kategori', function ($q) use ($kategori) {
-                $q->where('jenis_kategori', $kategori);
-            });
-        })
-        ->orderBy('id')
-        ->paginate(10)
-        ->withQueryString(); // biar filter kategori tetap ada saat pindah halaman
+        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_ptk', 'like', "%{$search}%")
+                    ->orWhere('jabatan_id', 'like', "%{$search}%");
+            })
+            ->when($kategori, function ($query) use ($kategori) {
+                $query->whereHas('kategori', function ($q) use ($kategori) {
+                    $q->where('jenis_kategori', $kategori);
+                });
+            })
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString(); // biar filter kategori tetap ada saat pindah halaman
 
-    return view('dashboard.data-ptk.index', compact('dataPtk'));
-}
+        return view('dashboard.data-ptk.index', compact('dataPtk'));
+    }
 
     public function create()
     {
@@ -133,19 +133,31 @@ class DataPTKController extends Controller
             'file' => 'required|file|mimes:xlsx,xls,csv|max:5120',
         ]);
 
-        $import = new DataPtkImport;
+        $import = new DataPtkImport();
+
         Excel::import($import, $request->file('file'));
 
-        $gagal = $import->failures();
+        $failures = $import->failures();
 
-        if ($gagal->isNotEmpty()) {
-            $pesan = $gagal->map(fn ($f) =>
-                "Baris {$f->row()}: " . implode('. ', $f->errors())
-            )->implode(' | ');
+        $berhasil = $import->getImportedCount();
+        $dilewati = $import->getSkippedCount();
+        $gagal    = $failures->count();
 
-            return back()->with('error', "Sebagian data gagal - {$pesan}");
+        if ($gagal > 0) {
+
+            $pesan = $failures->map(function ($failure) {
+                return "Baris {$failure->row()}: " . implode(', ', $failure->errors());
+            })->implode(' | ');
+
+            return back()->with(
+                'warning',
+                "Import selesai. {$berhasil} data berhasil diimport, {$dilewati} data dilewati karena sudah ada, {$gagal} data gagal. {$pesan}"
+            );
         }
 
-        return back()->with('success', 'Data PTK berhasil diimport.');
+        return back()->with(
+            'success',
+            "Import selesai. {$berhasil} data berhasil diimport, {$dilewati} data dilewati karena sudah ada."
+        );
     }
 }

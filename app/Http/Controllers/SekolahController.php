@@ -26,7 +26,7 @@ class SekolahController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $search = $request->search;
         $jenjang = $request->jenjang;
@@ -147,8 +147,13 @@ class SekolahController extends Controller
 
         DB::transaction(function () use ($request, $sekolah) {
             $sekolah->update($request->only([
-                'nama_sekolah', 'npsn_sekolah', 'alamat_sekolah',
-                'kecamatan_id', 'kabupaten_id', 'jenjang_sekolah', 'scope_pengelolaan',
+                'nama_sekolah',
+                'npsn_sekolah',
+                'alamat_sekolah',
+                'kecamatan_id',
+                'kabupaten_id',
+                'jenjang_sekolah',
+                'scope_pengelolaan',
             ]));
 
             if ($sekolah->operator) {
@@ -189,16 +194,26 @@ class SekolahController extends Controller
         $import = new SekolahImport;
         Excel::import($import, $request->file('file'));
 
-        $gagal = $import->failures();
+        $failures = $import->failures();
 
-        if ($gagal->isNotEmpty()) {
-            $pesan = $gagal->map(fn ($f) =>
-                "Baris {$f->row()}: " . implode('. ', $f->errors())
-            )->implode(' | ');
+        $berhasil = $import->getImportedCount();
+        $dilewati = $import->getSkippedCount();
+        $gagal = $failures->count();
 
-            return back()->with('error', "Sebagian data gagal - {$pesan}");
+        if ($gagal > 0) {
+            $detail = $failures->map(function ($failures) {
+                return "Baris {$failures->row()}: " . implode(', ', $failures->errors());
+            })->implode(' | ');
+
+            return back()->with(
+                'warning',
+                "Import selesai. {$berhasil} data berhasil diimport, {$dilewati} dilewati karena sudah ada, {$gagal} data gagal. {$detail}"
+            );
         }
 
-        return back()->with('success', "Data sekolah berhasil diimport.");
+        return back()->with(
+            'success',
+            "Import selesai. {$berhasil} data berhasil diimport, {$dilewati} data dilewati karena sudah ada."
+        );
     }
 }

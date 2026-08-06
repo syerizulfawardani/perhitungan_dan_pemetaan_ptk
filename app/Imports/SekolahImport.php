@@ -16,12 +16,14 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 
-class SekolahImport implements ToModel, WithHeadingRow, WithValidation, WithUpserts, SkipsEmptyRows, SkipsOnFailure
+class SekolahImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
 {
     use SkipsFailures;
 
     protected $kecamatanMap;
     protected $kabupatenMap;
+    protected $skipped = 0;
+    protected $imported = 0;
 
     public function __construct()
     {
@@ -34,13 +36,17 @@ class SekolahImport implements ToModel, WithHeadingRow, WithValidation, WithUpse
 
     public function model(array $row)
     {
-        $kec = Str::lower(trim($row['kecamatan'] ?? ''));
-        $kab = Str::lower(trim($row['kabupaten'] ?? ''));
-
         $namaSekolah = trim($row['nama_sekolah']);
         $npsn        = trim($row['npsn_sekolah']);
 
-        // Otomatis buat akun operator untuk sekolah ini (NPSN sebagai login & password awal)
+        if (Sekolah::where('npsn_sekolah', $npsn)->exists()) {
+            $this->skipped++;
+            return null;
+        }
+
+        $kec = Str::lower(trim($row['kecamatan'] ?? ''));
+        $kab = Str::lower(trim($row['kabupaten'] ?? ''));
+
         $operator = User::firstOrCreate(
             ['login_id' => $npsn],
             [
@@ -53,6 +59,8 @@ class SekolahImport implements ToModel, WithHeadingRow, WithValidation, WithUpse
         if (! $operator->hasRole('operator_sekolah')) {
             $operator->assignRole('operator_sekolah');
         }
+
+        $this->imported++;
 
         return new Sekolah([
             'nama_sekolah'      => $namaSekolah,
@@ -79,5 +87,15 @@ class SekolahImport implements ToModel, WithHeadingRow, WithValidation, WithUpse
             'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
             'scope_pengelolaan' => 'nullable|in:kabupaten,kecamatan',
         ];
+    }
+
+    public function getSkippedCount(): int
+    {
+        return $this->skipped;
+    }
+
+    public function getImportedCount(): int
+    {
+        return $this->imported;
     }
 }
