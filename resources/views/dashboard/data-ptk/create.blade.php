@@ -13,12 +13,8 @@
                     @csrf
 
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $err)
-                                    <li>{{ $err }}</li>
-                                @endforeach
-                            </ul>
+                        <div style="background-color:#fde8e8; border:none; border-radius:0.5rem; color:#e02424; padding:1rem 1.25rem; margin-bottom:1rem;">
+                            {{ $errors->first() }}
                         </div>
                     @endif
 
@@ -54,7 +50,8 @@
                     <div class="mb-3">
                         <label class="form-label">Nama Pendidik & Tenaga Kependidikan</label>
                         <input type="text" class="form-control" name="nama_ptk"
-                            placeholder="Masukkan nama pendidik & tenaga kependidikan">
+                            placeholder="Masukkan nama pendidik & tenaga kependidikan"
+                            value="{{ old('nama_ptk') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kategori</label>
@@ -62,20 +59,20 @@
                         <select name="kategori_id" id="kategori_id" class="form-select">
                             <option value="">-- Kategori --</option>
                             @foreach ($kategori as $k)
-                                <option value="{{ $k->id }}">{{ $k->jenis_kategori }}</option>
+                                <option value="{{ $k->id }}" {{ old('kategori_id') == $k->id ? 'selected' : '' }}>{{ $k->jenis_kategori }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tanggal Pengangkatan</label>
-                        <input type="date" class="form-control" name="tmt_pengangkatan">
+                        <input type="date" class="form-control" name="tmt_pengangkatan" value="{{ old('tmt_pengangkatan') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Jabatan</label>
                         <select name="jabatan_id" class="form-select">
                             <option value="">-- Jabatan --</option>
                             @foreach ($jabatan as $j)
-                                <option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
+                                <option value="{{ $j->id }}" {{ old('jabatan_id') == $j->id ? 'selected' : '' }}>{{ $j->nama_jabatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -85,7 +82,7 @@
                         <select name="bidang_id" class="form-select">
                             <option value="">-- Bidang --</option>
                             @foreach ($bidang as $b)
-                                <option value="{{ $b->id }}">{{ $b->nama_bidang_sertifikasi }}</option>
+                                <option value="{{ $b->id }}" {{ old('bidang_id') == $b->id ? 'selected' : '' }}>{{ $b->nama_bidang_sertifikasi }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -95,7 +92,7 @@
                         <select name="pangkat_golongan_id" class="form-select">
                             <option value="">-- Pangkat Golongan --</option>
                             @foreach ($pangkat as $p)
-                                <option value="{{ $p->id }}">{{ $p->nama_golongan }}</option>
+                                <option value="{{ $p->id }}" {{ old('pangkat_golongan_id') == $p->id ? 'selected' : '' }}>{{ $p->nama_golongan }}</option>
                             @endforeach
                         </select>
                     </div>

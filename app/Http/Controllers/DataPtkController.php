@@ -60,6 +60,12 @@ class DataPTKController extends Controller
             'jabatan_id'          => 'required|exists:jabatan_ptk,id',
             'bidang_id'           => 'required|exists:bidang_studi_sertifikasi,id',
             'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
+        ], [
+            'kategori_id.required'         => 'Please fill out this field',
+            'nama_ptk.required'            => 'Please fill out this field',
+            'jabatan_id.required'          => 'Please fill out this field',
+            'bidang_id.required'           => 'Please fill out this field',
+            'pangkat_golongan_id.required' => 'Please fill out this field',
         ]);
 
         // Jika kecamatan tidak diisi manual, ambil dari sekolah yang dipilih
@@ -70,7 +76,7 @@ class DataPTKController extends Controller
 
         DataPTK::create($validated);
 
-        return redirect()->route('data-ptk')->with('success', 'Data PTK berhasil disimpan.');
+        return redirect()->route('data-ptk')->with('success', 'Data PTK Berhasil Ditambahkan.');
     }
 
     public function show($id)
@@ -107,6 +113,12 @@ class DataPTKController extends Controller
             'jabatan_id'          => 'required|exists:jabatan_ptk,id',
             'bidang_id'           => 'required|exists:bidang_studi_sertifikasi,id',
             'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
+        ], [
+            'kategori_id.required'         => 'Please fill out this field',
+            'nama_ptk.required'            => 'Please fill out this field',
+            'jabatan_id.required'          => 'Please fill out this field',
+            'bidang_id.required'           => 'Please fill out this field',
+            'pangkat_golongan_id.required' => 'Please fill out this field',
         ]);
 
         if (empty($validated['kecamatan_id']) && !empty($validated['sekolah_id'])) {

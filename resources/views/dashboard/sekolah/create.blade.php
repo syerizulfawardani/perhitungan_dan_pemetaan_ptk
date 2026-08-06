@@ -2,19 +2,15 @@
     <div class="container-fluid">
         <div class="card shadow-sm">
             <div class="card-header">
-                <h3 class="card-title p-4 rounded mb-0 text-white bg-primary">Tambah Sekolah Baru</h3>
+                <h3 class="card-title p-4 rounded mb-0 text-white bg-dark">Tambah Sekolah Baru</h3>
             </div>
             <div class="card-body bg-light">
                 <form action="{{ route('sekolah.store') }}" method="POST">
                     @csrf
 
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all () as $err)
-                                    <li>{{ $err }}</li>
-                                @endforeach
-                            </ul>
+                        <div style="background-color:#fde8e8; border:none; border-radius:0.5rem; color:#e02424; padding:1rem 1.25rem; margin-bottom:1rem;">
+                            {{ $errors->first() }}
                         </div>
                     @endif
                     <div class="alert alert-info">
@@ -23,22 +19,22 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nama Sekolah</label>
-                        <input type="text" class="form-control" name="nama_sekolah">
+                        <input type="text" class="form-control" name="nama_sekolah" value="{{ old('nama_sekolah') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">NPSN Sekolah</label>
-                        <input type="text" class="form-control" name="npsn_sekolah">
+                        <input type="text" class="form-control" name="npsn_sekolah" value="{{ old('npsn_sekolah') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Alamat Sekolah</label>
-                        <input type="text" class="form-control" name="alamat_sekolah">
+                        <input type="text" class="form-control" name="alamat_sekolah" value="{{ old('alamat_sekolah') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kabupaten</label>
                         <select class="form-select" name="kabupaten_id">
                             <option value="">-- Kabupaten --</option>
                             @foreach ( $kabupaten as $k )
-                                <option value="{{ $k->id }}">{{ $k->nama_kabupaten }}</option>
+                                <option value="{{ $k->id }}" @selected(old('kabupaten_id') == $k->id)>{{ $k->nama_kabupaten }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -47,7 +43,7 @@
                         <select class="form-select" name="kecamatan_id">
                             <option value="">-- Kecamatan --</option>
                             @foreach ( $kecamatan as $k )
-                                <option value="{{ $k->id }}">{{ $k->nama_kecamatan }}</option>
+                                <option value="{{ $k->id }}" @selected(old('kecamatan_id') == $k->id)>{{ $k->nama_kecamatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -55,18 +51,17 @@
                         <label class="form-label">Jenjang Sekolah</label>
                         <select class="form-select" name="jenjang_sekolah">
                             <option value="">-- Pilih Jenjang Sekolah --</option>
-                            <option value="PAUD">PAUD</option>
-                            <option value="SD">SD</option>
-                            <option value="SMP">SMP</option>
+                            <option value="PAUD" @selected(old('jenjang_sekolah') == 'PAUD')>PAUD</option>
+                            <option value="SD" @selected(old('jenjang_sekolah') == 'SD')>SD</option>
+                            <option value="SMP" @selected(old('jenjang_sekolah') == 'SMP')>SMP</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tingkat Pengelolaan</label>
                         <select class="form-select" name="scope_pengelolaan">
                             <option value="">-- Pilih Tingkat Pengelolaan --</option>
-                            <option value="kabupaten">KABUPATEN</option>
-                            <option value="kecamatan">KECAMATAN</option>
-
+                            <option value="kabupaten" @selected(old('scope_pengelolaan') == 'kabupaten')>KABUPATEN</option>
+                            <option value="kecamatan" @selected(old('scope_pengelolaan') == 'kecamatan')>KECAMATAN</option>
                         </select>
                     </div>
 

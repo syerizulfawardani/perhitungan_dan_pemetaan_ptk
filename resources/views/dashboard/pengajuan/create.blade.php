@@ -14,11 +14,7 @@
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show">
             <strong><i class="ti ti-alert-circle me-1"></i>Terdapat kesalahan input:</strong>
-            <ul class="mb-0 mt-2 ps-3">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <p class="mb-0 mt-2">{{ $errors->first() }}</p>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif

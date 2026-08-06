@@ -15,26 +15,6 @@
                 @endif
             </p>
         </div>
-
-        {{-- Quick actions per role --}}
-        <div class="d-flex gap-2 flex-wrap">
-            @role('admin')
-                <a href="{{ route('peta-ptk') }}" class="btn btn-outline-primary btn-sm">
-                    <i class="ti ti-map me-1"></i> Peta PTK
-                </a>
-                <a href="{{ route('pengajuan-ptk.index') }}" class="btn btn-primary btn-sm">
-                    <i class="ti ti-checklist me-1"></i> Validasi Pengajuan
-                </a>
-            @endrole
-            @role('operator_sekolah')
-                <a href="{{ route('sekolah.my') }}" class="btn btn-outline-primary btn-sm">
-                    <i class="ti ti-school me-1"></i> Sekolah Saya
-                </a>
-                <a href="{{ route('pengajuan-ptk.create') }}" class="btn btn-primary btn-sm">
-                    <i class="ti ti-plus me-1"></i> Ajukan Pengajuan
-                </a>
-            @endrole
-        </div>
     </div>
 
     {{-- ── Stat Cards ────────────────────────────────────────── --}}

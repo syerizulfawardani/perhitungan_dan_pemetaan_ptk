@@ -56,7 +56,7 @@ class PengajuanPtkController extends Controller
         $kategoris       = KategoriPTK::orderBy('jenis_kategori')->get();
         $bidangs         = BidangPTK::orderBy('nama_bidang_sertifikasi')->get();
         $sekolahOperator = Auth::user()->sekolah()->first();
-        $previewNomor = PengajuanPtk::previewNomor();
+        $previewNomor    = PengajuanPtk::previewNomor();
 
         return view('dashboard.pengajuan.create', compact('kategoris', 'bidangs', 'sekolahOperator', 'previewNomor'));
     }
@@ -69,14 +69,18 @@ class PengajuanPtkController extends Controller
             'kategori_id'      => 'required|exists:kategori_ptk,id',
             'bidang_id'        => 'required|exists:bidang_studi_sertifikasi,id',
             'alasan_pengajuan' => 'required|string|min:10',
+        ], [
+            'kategori_id.required'      => 'Please fill out this field',
+            'bidang_id.required'        => 'Please fill out this field',
+            'alasan_pengajuan.required' => 'Please fill out this field',
         ]);
 
-        $validated['nomor_pengajuan']        = PengajuanPtk::generateNomor();
-        $validated['tmt_pengangkatan'] = now()->toDateString();
-        $validated['operator_id']      = Auth::id();
-        $validated['diproses_oleh']    = Auth::id();
-        $validated['status']           = PengajuanPtk::STATUS_MENUNGGU;
-        $validated['catatan_admin']    = '';
+        $validated['nomor_pengajuan']   = PengajuanPtk::generateNomor();
+        $validated['tmt_pengangkatan']  = now()->toDateString();
+        $validated['operator_id']       = Auth::id();
+        $validated['diproses_oleh']     = Auth::id();
+        $validated['status']            = PengajuanPtk::STATUS_MENUNGGU;
+        $validated['catatan_admin']     = '';
 
         PengajuanPtk::create($validated);
 
@@ -132,6 +136,10 @@ class PengajuanPtkController extends Controller
             'kategori_id'      => 'required|exists:kategori_ptk,id',
             'bidang_id'        => 'required|exists:bidang_studi_sertifikasi,id',
             'alasan_pengajuan' => 'required|string|min:10',
+        ], [
+            'kategori_id.required'      => 'Please fill out this field',
+            'bidang_id.required'        => 'Please fill out this field',
+            'alasan_pengajuan.required' => 'Please fill out this field',
         ]);
 
         $sekolah = Sekolah::where('operator_id', $pengajuanPtk->operator_id)->first();
@@ -174,10 +182,18 @@ class PengajuanPtkController extends Controller
     {
         abort_if(!Auth::user()->hasRole('admin'), 403);
 
-        $request->validate([
-            'status'        => 'required|in:proses,disetujui,ditolak',
-            'catatan_admin' => 'nullable|required_if:status,ditolak|string|max:500',
-        ]);
+        $request->validate(
+            [
+                'status'        => 'required|in:proses,disetujui,ditolak',
+                'catatan_admin' => 'nullable|required_if:status,ditolak|string|max:500',
+            ],
+            [
+                'catatan_admin.required_if' => 'Catatan penolakan wajib diisi ketika status ditolak.',
+            ],
+            [
+                'catatan_admin' => 'catatan admin',
+            ]
+        );
 
         $pengajuanPtk->update([
             'status'        => $request->status,
