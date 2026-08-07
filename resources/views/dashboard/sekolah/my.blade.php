@@ -6,9 +6,6 @@
                 <h4 class="mb-0 fw-semibold">Sekolah Saya</h4>
                 <p class="text-muted mb-0 small">Profil sekolah yang terdaftar atas akun Anda</p>
             </div>
-            <span class="badge bg-primary px-3 py-2 rounded-pill fs-6">
-                {{ $sekolah->count() }} Sekolah
-            </span>
         </div>
 
         @if (session('success'))
@@ -141,11 +138,17 @@
 
                             {{-- Kolom kanan: Data PTK ringkas --}}
                             <div class="col-md-6">
-                                <h6 class="fw-semibold text-uppercase text-muted mb-3"
-                                    style="font-size:.7rem;letter-spacing:.08em">
-                                    <i class="ti ti-users me-1"></i>
-                                    Data PTK Sekolah
-                                </h6>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h6 class="fw-semibold text-uppercase text-muted mb-0"
+                                        style="font-size:.7rem;letter-spacing:.08em">
+                                        <i class="ti ti-users me-1"></i>
+                                        Data PTK Sekolah
+                                    </h6>
+                                    <a href="{{ route('sekolah.data-ptk', $s) }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
 
                                 @php
                                     $pendidik = $s->dataPtk->where('kategori_id', 1);

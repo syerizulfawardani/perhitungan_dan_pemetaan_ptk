@@ -30,6 +30,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     // Operator only
     Route::middleware('role:operator_sekolah')->group(function () {
         Route::get('/sekolah-saya', [SekolahController::class, 'mySekolah'])->name('sekolah.my');
+        Route::get('/sekolah/{id}/data-ptk', [SekolahController::class, 'dataPtk'])->name('sekolah.data-ptk');
     });
 
     // Admin only

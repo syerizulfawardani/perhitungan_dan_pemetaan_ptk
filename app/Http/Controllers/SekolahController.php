@@ -7,6 +7,8 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Sekolah;
 use App\Models\User;
+use App\Models\DataPTK;
+use App\Models\KategoriPTK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +79,7 @@ class SekolahController extends Controller
 
             $operator = User::create([
                 'name' => 'Operator ' . $request->nama_sekolah,
-                'email' => $request->npsn_sekolah. '@sch.id',
+                'email' => $request->npsn_sekolah . '@sch.id',
                 'login_id' => $request->npsn_sekolah,
                 'password' => bcrypt($request->npsn_sekolah),
             ]);
@@ -179,6 +181,48 @@ class SekolahController extends Controller
         });
 
         return redirect()->route('sekolah')->with('success', 'Sekolah berhasil dihapus.');
+    }
+
+    public function dataPtk(Request $request, Sekolah $sekolah)
+    {
+        abort_if($sekolah->operator_id !== auth()->id(), 403);
+
+        $query = DataPTK::with([
+            'sekolah',
+            'kategori',
+            'jabatan',
+            'bidang',
+            'pangkat_golongan',
+        ])
+            ->where('sekolah_id', $sekolah->id);
+
+        if ($request->filled('kategori')) {
+            $query->where('kategori_id', $request->kategori);
+        }
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+
+                $q->where('nama_ptk', 'like', '%' . $request->search . '%')
+                    ->orWhere('nip', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $dataPtk = $query
+            ->orderBy('nama_ptk')
+            ->paginate(15)
+            ->withQueryString();
+
+        $kategoris = KategoriPTK::orderBy('jenis_kategori')->get();
+
+        return view(
+            'dashboard.sekolah.data-ptk',
+            compact(
+                'sekolah',
+                'dataPtk',
+                'kategoris'
+            )
+        );
     }
 
     public function import(Request $request)
