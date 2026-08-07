@@ -170,11 +170,13 @@
                         </a>
                     </li>
                 @endrole
-
+                
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">PTK</span>
                 </li>
+                @role('admin')
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow @if (request()->is('dashboard/data-ptk*')) active @endif"
                         href="javascript:void(0)" aria-expanded="false">
@@ -202,6 +204,7 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
                 <li class="sidebar-item">
                     <a class="sidebar-link @if (request()->is('dashboard/pengajuan-ptk*')) active @endif"
                         href="{{ route('pengajuan-ptk.index') }}" aria-expanded="false">

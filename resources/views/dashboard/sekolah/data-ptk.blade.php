@@ -10,9 +10,6 @@
                 <h4 class="mb-0 fw-semibold mt-1">Data PTK — {{ $sekolah->nama_sekolah }}</h4>
                 <p class="text-muted mb-0 small">NPSN: {{ $sekolah->npsn_sekolah }}</p>
             </div>
-            <span class="badge bg-primary px-3 py-2 rounded-pill fs-6">
-                {{ $dataPtk->total() }} PTK
-            </span>
         </div>
 
         @if (session('success'))
