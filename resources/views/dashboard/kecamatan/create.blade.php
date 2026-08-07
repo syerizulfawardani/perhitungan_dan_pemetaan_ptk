@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="card shadow-sm">
             {{-- card header shadow-sm --}}
-            <div class="card-header bg-dark">
+            <div class="card-header" style="background-color: #0f1f3d">
                 <h3 class="card-title mb-0 text-white">Tambah Kecamatan Baru</h3>
             </div>
             {{-- card header stop --}}
@@ -22,7 +22,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Nama Kecamatan</label>
-                                <input type="text" class="form-control" placeholder="Masukkan nama Kecamatan" name="nama_kecamatan">
+                                <input type="text" class="form-control" placeholder="Masukkan nama kecamatan..." name="nama_kecamatan">
                             </div>
                         </div>
 
@@ -31,14 +31,13 @@
                                 <label class="form-label">Kabupaten</label>
                                 <select name="kabupaten_id" class="form-select">
                                     <option value="" disabled>Pilih kabupaten</option>
-                                    @forelse ($kecamatan->unique('kabupaten_id') as $k)
+                                    @forelse ($kecamatan->unique('kabupaten_id') as $k )
                                     <option value="{{ $k->kabupaten->id }}">{{ $k->kabupaten->nama_kabupaten }}</option>
                                     @empty
                                         <option value=""disabled>Data tidak ditemukan</option>
                                     @endforelse
-
-
                                 </select>
+
                             </div>
                         </div>
                         <div class="col-12 d-flex justify-content-end">

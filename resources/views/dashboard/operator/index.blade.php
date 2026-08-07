@@ -59,7 +59,7 @@
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
 
-                    <thead class="table-light">
+                    <thead class="table-white">
                         <tr class="text-center">
                             <th width="70">No</th>
                             <th>Nama Operator</th>

@@ -45,9 +45,6 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.index', compact('sekolah'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $kabupaten = Kabupaten::all();
@@ -56,9 +53,6 @@ class SekolahController extends Controller
         return view("dashboard.sekolah.create", compact("kabupaten", "kecamatan", "operators"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -69,14 +63,21 @@ class SekolahController extends Controller
             'kabupaten_id' => 'nullable|exists:kabupaten,id',
             'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
             'scope_pengelolaan' => 'required|in:kecamatan,kabupaten',
+        ], [
+            'nama_sekolah.required' => 'Please fill out this field',
+            'npsn_sekolah.required' => 'Please fill out this field',
+            'npsn_sekolah.unique' => 'NPSN sudah terdaftar',
+            'alamat_sekolah.required' => 'Please fill out this field',
+            'jenjang_sekolah.required' => 'Please fill out this field',
+            'scope_pengelolaan.required' => 'Please fill out this field',
         ]);
 
         DB::transaction(function () use ($request) {
             $emailLocalPart = preg_replace('/[^A-Za-z0-9._-]/', '', $request->nama_sekolah);
 
             $operator = User::create([
-                'name' => $request->nama_sekolah,
-                'email' => $emailLocalPart . '@src.id',
+                'name' => 'Operator ' . $request->nama_sekolah,
+                'email' => $request->npsn_sekolah. '@sch.id',
                 'login_id' => $request->npsn_sekolah,
                 'password' => bcrypt($request->npsn_sekolah),
             ]);
@@ -99,9 +100,6 @@ class SekolahController extends Controller
         return redirect()->route('sekolah')->with('success', 'Sekolah berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $sekolah = Sekolah::findOrFail($id);
@@ -113,9 +111,6 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.show', compact('sekolah', 'kabupaten', 'kecamatan', 'operators'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $sekolah = Sekolah::findOrFail($id);
@@ -127,9 +122,6 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.edit', compact('sekolah', 'kabupaten', 'kecamatan', 'operators'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $sekolah = Sekolah::findOrFail($id);
@@ -142,7 +134,13 @@ class SekolahController extends Controller
             'kabupaten_id' => 'nullable|exists:kabupaten,id',
             'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
             'scope_pengelolaan' => 'required|in:kecamatan,kabupaten',
-
+        ], [
+            'nama_sekolah.required' => 'Please fill out this field',
+            'npsn_sekolah.required' => 'Please fill out this field',
+            'npsn_sekolah.unique' => 'NPSN sudah terdaftar',
+            'alamat_sekolah.required' => 'Please fill out this field',
+            'jenjang_sekolah.required' => 'Please fill out this field',
+            'scope_pengelolaan.required' => 'Please fill out this field',
         ]);
 
         DB::transaction(function () use ($request, $sekolah) {
@@ -160,8 +158,8 @@ class SekolahController extends Controller
                 $emailLocalPart = preg_replace('/[^A-Za-z0-9._-]/', '', $request->nama_sekolah);
 
                 $sekolah->operator->update([
-                    'name' => $request->nama_sekolah,
-                    'email' => $emailLocalPart . '@src.id',
+                    'name' => 'Operator ' . $request->nama_sekolah,
+                    'email' => $emailLocalPart . '@sch.id',
                     'login_id' => $request->npsn_sekolah,
                 ]);
             }
@@ -170,9 +168,7 @@ class SekolahController extends Controller
 
         return redirect()->route('sekolah')->with('success', 'Sekolah berhasil diperbaharui.');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $sekolah = Sekolah::findOrNew($id);
@@ -182,7 +178,7 @@ class SekolahController extends Controller
             $sekolah->delete();
         });
 
-        return redirect()->route('sekolah')->with('seccess', 'Sekolah berhasil dihapus.');
+        return redirect()->route('sekolah')->with('success', 'Sekolah berhasil dihapus.');
     }
 
     public function import(Request $request)

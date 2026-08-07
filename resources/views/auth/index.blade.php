@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        html {
+            overflow-x: hidden;
+        }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
@@ -33,7 +37,8 @@
             justify-content: center;
             padding: 1.5rem;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         /* Background radial glow */
@@ -102,6 +107,7 @@
             z-index: 10;
             width: 100%;
             max-width: 460px;
+            margin: 2rem 0;
             animation: fadeUp .65s ease both;
         }
 

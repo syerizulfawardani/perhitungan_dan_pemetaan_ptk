@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPtkExport;
 use App\Imports\DataPtkImport;
 use App\Models\BidangPTK;
 use App\Models\DataPTK;
@@ -20,7 +21,7 @@ class DataPTKController extends Controller
         $search   = $request->search;
         $kategori = $request->kategori; // "Pendidik" | "Tenaga Kependidikan"
 
-        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
+        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan', 'sekolah'])
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_ptk', 'like', "%{$search}%")
                     ->orWhere('jabatan_id', 'like', "%{$search}%");
@@ -32,7 +33,7 @@ class DataPTKController extends Controller
             })
             ->orderBy('id')
             ->paginate(10)
-            ->withQueryString(); // biar filter kategori tetap ada saat pindah halaman
+            ->withQueryString();
 
         return view('dashboard.data-ptk.index', compact('dataPtk'));
     }
@@ -60,6 +61,12 @@ class DataPTKController extends Controller
             'jabatan_id'          => 'required|exists:jabatan_ptk,id',
             'bidang_id'           => 'required|exists:bidang_studi_sertifikasi,id',
             'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
+        ], [
+            'kategori_id.required'         => 'Please fill out this field',
+            'nama_ptk.required'            => 'Please fill out this field',
+            'jabatan_id.required'          => 'Please fill out this field',
+            'bidang_id.required'           => 'Please fill out this field',
+            'pangkat_golongan_id.required' => 'Please fill out this field',
         ]);
 
         // Jika kecamatan tidak diisi manual, ambil dari sekolah yang dipilih
@@ -70,7 +77,7 @@ class DataPTKController extends Controller
 
         DataPTK::create($validated);
 
-        return redirect()->route('data-ptk')->with('success', 'Data PTK berhasil disimpan.');
+        return redirect()->route('data-ptk')->with('success', 'Data PTK Berhasil Ditambahkan.');
     }
 
     public function show($id)
@@ -107,6 +114,12 @@ class DataPTKController extends Controller
             'jabatan_id'          => 'required|exists:jabatan_ptk,id',
             'bidang_id'           => 'required|exists:bidang_studi_sertifikasi,id',
             'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
+        ], [
+            'kategori_id.required'         => 'Please fill out this field',
+            'nama_ptk.required'            => 'Please fill out this field',
+            'jabatan_id.required'          => 'Please fill out this field',
+            'bidang_id.required'           => 'Please fill out this field',
+            'pangkat_golongan_id.required' => 'Please fill out this field',
         ]);
 
         if (empty($validated['kecamatan_id']) && !empty($validated['sekolah_id'])) {
@@ -158,6 +171,14 @@ class DataPTKController extends Controller
         return back()->with(
             'success',
             "Import selesai. {$berhasil} data berhasil diimport, {$dilewati} data dilewati karena sudah ada."
+        );
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new DataPtkExport(),
+            'Data_PTK.xlsx'
         );
     }
 }

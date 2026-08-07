@@ -1,26 +1,16 @@
 <x-layouts.app>
     <div class="container-fluid">
 
-        {{-- Breadcrumb --}}
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h4 class="mb-1 fw-semibold">Edit PTK</h4>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk') }}" class="text-muted text-decoration-none">Data PTK</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk.show', $ptk->id) }}" class="text-muted text-decoration-none">Detail</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('data-ptk.show', $ptk->id) }}" class="btn btn-light d-flex align-items-center gap-1">
-                    <i class="ti ti-arrow-left fs-5"></i>
-                    <span class="d-none d-sm-inline">Kembali</span>
-                </a>
-            </div>
-        </div>
+       {{-- Header Card --}}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark d-flex align-items-center justify-content-between">
+        <h5 class="mb-0 text-white fw-semibold">Edit Data Pendidik & Tenaga Kependidikan</h5>
+        <a href="{{ route('data-ptk.show', $ptk->id) }}" class="btn btn-light btn-sm d-flex align-items-center gap-1">
+            <i class="ti ti-arrow-left fs-5"></i>
+            <span>Kembali</span>
+        </a>
+    </div>
+</div>
 
         <form action="{{ route('data-ptk.update', $ptk->id) }}" method="POST" id="formEdit">
             @csrf
@@ -207,6 +197,28 @@
                                 </div>
                             </div>
 
+                             {{-- NIP --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-medium">
+                                    Nomor Induk Pegawai
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="ti ti-user text-muted"></i>
+                                    </span>
+                                    <input type="text"
+                                        class="form-control border-start-0 ps-0 @error('nip') is-invalid @enderror"
+                                        name="nip"
+                                        id="inputNama"
+                                        value="{{ old('nip', $ptk->nip) }}"
+                                        placeholder="Masukkan nomor induk pegawai">
+                                    @error('nip')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             {{-- Kategori --}}
                             <div class="mb-4">
                                 <label class="form-label fw-medium">
@@ -275,7 +287,7 @@
 
                             {{-- Bidang --}}
                             <div class="mb-4">
-                                <label class="form-label fw-medium">Bidang Sertifikasi</label>
+                                <label class="form-label fw-medium">Bidang Studi</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0">
                                         <i class="ti ti-school text-muted"></i>

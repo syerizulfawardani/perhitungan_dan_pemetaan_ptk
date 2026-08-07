@@ -152,4 +152,9 @@ class PengajuanPtk extends Model
     {
         return $query->where('operator_id', $userId);
     }
+
+    public function lampiran()
+    {
+        return $this->hasMany(PengajuanPtkLampiran::class);
+    }
 }

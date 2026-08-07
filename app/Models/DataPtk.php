@@ -10,6 +10,7 @@ class DataPTK extends Model
     protected $table = "data_ptk";
     protected $fillable = [
         "sekolah_id",
+        "nip",
         "kecamatan_id",
         "pengajuan_ptk_id",
         "nama_ptk",
@@ -18,9 +19,11 @@ class DataPTK extends Model
         "jabatan_id",
         "bidang_id",
         "pangkat_golongan_id",
+        "is_aktif",
     ];
     protected $casts = [
         'tmt_pengangkatan' => 'date',
+        'is_aktif' => 'boolean'
     ];
 
     public function sekolah()
