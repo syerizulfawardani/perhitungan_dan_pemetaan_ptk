@@ -113,6 +113,7 @@
                                 <th>NIP</th>
                                 <th>Jabatan PTK</th>
                                 <th>Asal Sekolah</th>
+                                <th>Status</th>
                                 <th width="140">Aksi</th>
                             </tr>
                         </thead>
@@ -135,6 +136,9 @@
                                     </td>
                                     <td class="text-center">
                                         {{ $ptk->sekolah->nama_sekolah ?? '-' }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ $ptk->is_active ? 'Aktif' : 'Tidak Aktif' }}
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
