@@ -70,7 +70,7 @@
         <label class="form-label fw-semibold">
             Kategori PTK <span class="text-danger">*</span>
         </label>
-        <select name="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
+        <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
             <option value="">-- Pilih Kategori --</option>
             @foreach ($kategoris as $kat)
                 <option value="{{ $kat->id }}"
@@ -85,14 +85,19 @@
     </div>
 
     {{-- Bidang Studi Sertifikasi --}}
+
+    @php
+        $selectKategori = old('kategori_id', $old?->kategori_id)
+    @endphp
+
     <div class="col-md-6">
         <label class="form-label fw-semibold">
             Bidang Studi <span class="text-danger">*</span>
         </label>
-        <select name="bidang_id" class="form-select @error('bidang_id') is-invalid @enderror">
+        <select name="bidang_id" id="bidang_id" class="form-select @error('bidang_id') is-invalid @enderror">
             <option value="">-- Pilih Bidang --</option>
             @foreach ($bidangs as $b)
-                <option value="{{ $b->id }}"
+                <option value="{{ $b->id }}" data-kategori = "{{ $b->kategori_id }}"
                     {{ old('bidang_id', $old?->bidang_id) == $b->id ? 'selected' : '' }}>
                     {{ $b->nama_bidang_sertifikasi }}
                 </option>
@@ -259,5 +264,32 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const kategoriSelect = document.getElementById('kategori_id')
+            const bidangSelect = document.getElementById('bidang_id')
+
+            function filterBidang() {
+                const kategoriId = kategoriSelect.value;
+
+                Array.from(bidangSelect.options).forEach(option => {
+                    if (option.value === '') {
+                        option.hidden = false;
+                        return;
+                    }
+
+                    option.hidden = option.dataset.kategori !== kategoriId;
+                });
+
+                const selected = bidangSelect.options[bidangSelect.selectedIndex];
+                if (selected && selected.hidden) {
+                    bidangSelect.value = '';
+                }
+            }
+
+            kategoriSelect.addEventListener('change', filterBidang);
+
+            filterBidang();
+        })
     </script>
 @endpush
